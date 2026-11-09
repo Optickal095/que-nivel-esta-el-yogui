@@ -20,6 +20,7 @@
         [posting]="comments.posting()"
         [error]="comments.error()"
         [moderating]="comments.moderating()"
+        [showModeration]="moderationRequested || comments.moderating()"
         [posted]="comments.posted()"
         (send)="comments.post($event)"
         (remove)="comments.remove($event)"

@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
 import { CharacterFacade } from './core/application/character.facade';
 import { CommentsFacade } from './core/application/comments.facade';
@@ -35,6 +36,10 @@ import { StatsComponent } from './ui/stats.component';
 export class App implements OnInit {
   protected readonly facade = inject(CharacterFacade);
   protected readonly comments = inject(CommentsFacade);
+  /** Moderation stays hidden from visitors: open the site with "?moderar" to see it. */
+  protected readonly moderationRequested = new URLSearchParams(
+    inject(DOCUMENT).location.search,
+  ).has('moderar');
 
   protected readonly presence = computed(() => {
     const c = this.facade.overview();

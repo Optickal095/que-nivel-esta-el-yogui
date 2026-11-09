@@ -92,24 +92,26 @@ import { shortDateTime, timeAgo } from '../core/domain/formatting';
         <p class="muted">Todavía no hay comentarios. ¡Sé el primero!</p>
       }
 
-      <div class="moderation">
-        @if (moderating()) {
-          <button type="button" class="link" (click)="lock.emit()">Salir de moderación</button>
-        } @else if (askingKey()) {
-          <form (submit)="sendKey($event)">
-            <input
-              type="password"
-              placeholder="Clave de moderación"
-              aria-label="Clave de moderación"
-              [value]="key()"
-              (input)="key.set($any($event.target).value)"
-            />
-            <button type="submit" class="link" [disabled]="!key().trim()">Entrar</button>
-          </form>
-        } @else {
-          <button type="button" class="link" (click)="askingKey.set(true)">Moderar</button>
-        }
-      </div>
+      @if (showModeration()) {
+        <div class="moderation">
+          @if (moderating()) {
+            <button type="button" class="link" (click)="lock.emit()">Salir de moderación</button>
+          } @else if (askingKey()) {
+            <form (submit)="sendKey($event)">
+              <input
+                type="password"
+                placeholder="Clave de moderación"
+                aria-label="Clave de moderación"
+                [value]="key()"
+                (input)="key.set($any($event.target).value)"
+              />
+              <button type="submit" class="link" [disabled]="!key().trim()">Entrar</button>
+            </form>
+          } @else {
+            <button type="button" class="link" (click)="askingKey.set(true)">Moderar</button>
+          }
+        </div>
+      }
     </section>
   `,
   styles: `
@@ -233,6 +235,8 @@ export class CommentsComponent {
   readonly posting = input(false);
   readonly error = input<string | null>(null);
   readonly moderating = input(false);
+  /** The "Moderar" link is hidden unless the page asks for it (see App). */
+  readonly showModeration = input(false);
   /** Changes after each successful post: clears the form. */
   readonly posted = input(0);
 

@@ -77,4 +77,8 @@ describe('App (page)', () => {
     expect(page.textContent).toContain('¡Vamos Yogui!');
     expect(page.querySelector('textarea')).not.toBeNull();
   });
+
+  it('hides the moderation link from visitors', () => {
+    expect(render().textContent).not.toContain('Moderar');
+  });
 });

@@ -80,7 +80,7 @@ Clean Architecture: las dependencias apuntan hacia adentro (presentación → ap
 
 - Cualquiera comenta con un nombre libre (o queda "Anónimo"), sin cuentas. Máximo 40 caracteres de nombre y 500 de mensaje.
 - **Anti-spam:** 30 s entre comentarios del mismo visitante (por hash de IP; Render va detrás de un proxy, por eso `trust proxy`) y un campo trampa (*honeypot*) invisible que solo llenan los bots.
-- **Moderación:** el botón "Moderar" al final de la sección pide la clave (`ADMIN_TOKEN`, generada por Render; se ve en el panel del servicio → *Environment*). Con la clave aparecen los botones "Borrar". El navegador recuerda la clave en `localStorage`.
+- **Moderación:** el botón "Moderar" está oculto para los visitantes; aparece al abrir el sitio con `?moderar` (por ejemplo `https://optickal095.github.io/que-nivel-esta-el-yogui/?moderar`). Pide la clave (`ADMIN_TOKEN`, generada por Render; se ve en el panel del servicio → *Environment*). Con la clave aparecen los botones "Borrar". El navegador recuerda la clave en `localStorage`.
 
 ## Versiones
 
