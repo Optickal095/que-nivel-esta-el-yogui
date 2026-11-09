@@ -2,8 +2,7 @@
 
 Sitio que muestra en todo momento el nivel, las muertes, el equipo, las estadísticas y la última conexión de **Dr Yogui**, un personaje de *World of Warcraft: Forever*. Los visitantes pueden dejar comentarios.
 
-- **Fase 1 (hecha):** datos de la API de perfiles de Blizzard para WoW Forever, guardados en Postgres para tener historial de nivel y respaldo.
-- **Fase 2 (pendiente):** modo en vivo. Un addon en el PC de Eduardo ve al Yogui en la lista de amigos y un *bridge* envía nivel y conexión a `POST /api/live`.
+Los datos salen de la API de perfiles de Blizzard para WoW Forever y se guardan en Postgres para tener historial de nivel y respaldo.
 
 ## Stack
 
@@ -28,7 +27,7 @@ En local, si existe `web/dist`, NestJS también sirve el Angular compilado en ht
 | Pieza | Dónde | Cómo |
 |---|---|---|
 | Web (Angular) | GitHub Pages: `https://optickal095.github.io/que-nivel-esta-el-yogui/` | `.github/workflows/pages.yml` compila con `--base-href` y `--define NG_API_BASE_URL` (variable del repo `API_BASE_URL`). |
-| API (NestJS) | Render, plan gratis | `render.yaml` (Blueprint). Los secretos se cargan en el panel de Render; `LIVE_TOKEN` y `ADMIN_TOKEN` los genera Render. |
+| API (NestJS) | Render, plan gratis | `render.yaml` (Blueprint). Los secretos (credenciales de Blizzard, `DATABASE_URL`, `ADMIN_TOKEN`) se cargan en el panel de Render. |
 | Base de datos | Neon (Postgres) | `DATABASE_URL` en Render, con la conexión directa (no la *pooled*). Las migraciones corren en el build con `prisma migrate deploy`. |
 | Despertador | GitHub Actions | `.github/workflows/keep-alive.yml` llama a la API cada 10 min para que Render no la duerma y siga registrando niveles. |
 | CI | GitHub Actions | `.github/workflows/ci.yml`: lint, tests y build de la API y la web. |
@@ -43,10 +42,10 @@ Clean Architecture: las dependencias apuntan hacia adentro (presentación → ap
 
 | Capa | Carpeta | Contenido |
 |---|---|---|
-| Dominio | `domain/` | `CharacterProfile`, `LevelEvent`, `Presence`, `Comment`. Reglas puras: `resolvePresence` (online / offline / desconocido, con vencimiento de 10 min del dato en vivo), `shouldRecordLevel` (los niveles solo suben), `levelSince` (desde cuándo está en el nivel actual; es exacto solo si se vio el nivel anterior), `deathsAtLevel` (muertes en el nivel actual = total − muertes guardadas al registrar el nivel), `validateComment` y `canCommentAgain` (30 s entre comentarios del mismo visitante), `buildOverview`. |
-| Aplicación | `application/` | Puertos (`ports.ts`) y casos de uso: `GetCharacterOverview` (caché de 2 min sobre Blizzard, conserva el último dato bueno si la API falla y comparte una sola consulta entre visitas simultáneas), `GetLevelHistory`, `RecordLiveUpdate`, `ListComments`, `PostComment`, `DeleteComment`. |
+| Dominio | `domain/` | `CharacterProfile`, `LevelEvent`, `Comment`. Reglas puras: `shouldRecordLevel` (los niveles solo suben), `levelSince` (desde cuándo está en el nivel actual; es exacto solo si se vio el nivel anterior), `deathsAtLevel` (muertes en el nivel actual = total − muertes guardadas al registrar el nivel), `validateComment` y `canCommentAgain` (30 s entre comentarios del mismo visitante), `buildOverview`. |
+| Aplicación | `application/` | Puertos (`ports.ts`) y casos de uso: `GetCharacterOverview` (caché de 2 min sobre Blizzard, conserva el último dato bueno si la API falla y comparte una sola consulta entre visitas simultáneas), `GetLevelHistory`, `ListComments`, `PostComment`, `DeleteComment`. |
 | Infraestructura | `infrastructure/` | `BlizzardApiClient` (OAuth *client credentials* con token en caché), `mapBlizzardCharacter` (JSON de Blizzard → dominio, función pura), `BlizzardCharacterProvider`, `PrismaCharacterStore`, `PrismaCommentStore`, `SystemClock`. |
-| Presentación | `presentation/` | `CharacterController` (`GET /api/character`, `GET /api/character/history`), `LiveController` (`POST /api/live`), `CommentsController` (`GET`/`POST /api/comments`; `DELETE /api/comments/:id` y `GET /api/comments/moderation` con `ADMIN_TOKEN`), `LiveTokenGuard`, `AdminTokenGuard`, DTOs. |
+| Presentación | `presentation/` | `CharacterController` (`GET /api/character`, `GET /api/character/history`), `CommentsController` (`GET`/`POST /api/comments`; `DELETE /api/comments/:id` y `GET /api/comments/moderation` con `ADMIN_TOKEN`), `AdminTokenGuard`, DTOs. |
 | Composición | `shared.module.ts`, `character.module.ts`, `comments.module.ts` | `SharedModule` da la config, la conexión a Postgres y el reloj. Cada módulo de feature une sus puertos con sus adaptadores y arma los casos de uso con *factories*. Los casos de uso no conocen NestJS. |
 
 **Puertos → adaptadores**
@@ -55,8 +54,7 @@ Clean Architecture: las dependencias apuntan hacia adentro (presentación → ap
 |---|---|---|
 | `CharacterProfileProvider` | `BlizzardCharacterProvider` | Perfil, equipo, estadísticas, imagen, profesiones, reputaciones, misiones, JcJ e íconos. |
 | `ProfileSnapshotStore` | `PrismaCharacterStore` | Último perfil bueno (caché y respaldo). |
-| `LevelHistoryStore` | `PrismaCharacterStore` | Cada subida de nivel observada, de la API o en vivo. |
-| `LiveSignalStore` | `PrismaCharacterStore` | Última señal del bridge (fase 2). |
+| `LevelHistoryStore` | `PrismaCharacterStore` | Cada subida de nivel observada. |
 | `CommentStore` | `PrismaCommentStore` | Comentarios. Guarda un hash de la IP (nunca la IP) para el límite de frecuencia. |
 | `Clock` | `SystemClock` | Hora actual, reemplazable en los tests. |
 
@@ -64,14 +62,14 @@ Clean Architecture: las dependencias apuntan hacia adentro (presentación → ap
 
 | Capa | Carpeta | Contenido |
 |---|---|---|
-| Dominio | `core/domain/` | Modelo de la vista y reglas puras de presentación: `timeAgo`, `presenceText`, colores de calidad y de clase, orden de slots, geometría del gráfico de nivel. |
+| Dominio | `core/domain/` | Modelo de la vista y reglas puras de presentación: `timeAgo`, `levelSinceText`, `deathsAtLevelText`, colores de calidad y de clase, orden de slots, geometría del gráfico de nivel. |
 | Aplicación | `core/application/` | Puertos `CharacterGateway`, `CommentsGateway` y `ModerationKeyStore` (`InjectionToken`). `CharacterFacade` y `CommentsFacade` (signals, refresco cada 60 s). |
 | Infraestructura | `core/infrastructure/` | `HttpCharacterGateway` y `HttpCommentsGateway` (`HttpClient` contra `/api`, fechas ISO, errores traducidos a mensajes para el visitante), `LocalStorageModerationKeyStore`. |
 | UI | `ui/` | Componentes que solo muestran datos y emiten eventos (`hero`, `presence-badge`, `equipment`, `stats`, `progress`, `fun-stats`, `level-history`, `comments`). Ninguno hace HTTP. |
 
 ### Patrones
 
-- **Ports & Adapters / Repository:** `PrismaCharacterStore` implementa tres puertos chicos (segregación de interfaces).
+- **Ports & Adapters / Repository:** `PrismaCharacterStore` implementa dos puertos chicos (segregación de interfaces).
 - **Adapter:** `BlizzardCharacterProvider` + `mapBlizzardCharacter` aíslan el JSON sin documentar de Blizzard; si la API cambia, se toca solo ese archivo.
 - **Cache-aside:** `GetCharacterOverview` sirve lo guardado y refresca cuando tiene más de 2 minutos (Blizzard actualiza el perfil 1 a 2 min después de que el personaje cierra sesión).
 - **Facade:** `CharacterFacade` y `CommentsFacade` exponen el estado de la página como signals.
@@ -100,7 +98,8 @@ npm test     # API: unitarios + e2e (Jest, con dobles de los puertos) · Web: Ka
 
 - No tiene documentación y puede cambiar sin aviso.
 - El personaje aparece recién desde nivel 10 y después de cerrar sesión.
-- El perfil se actualiza al cerrar sesión. Para ver el nivel en vivo existe la fase 2.
+- El perfil se actualiza al cerrar sesión (Blizzard tarda 1 a 2 min). El sitio muestra el nivel nuevo entre 2 y 4 min después de que el personaje sale del juego.
+- No informa si el personaje está conectado: la web muestra su última conexión.
 - La imagen del personaje (`character-media`) puede tardar horas en generarse; mientras tanto la web muestra las iniciales.
 - **No expone el `/played`.** "Lleva X en nivel N" es tiempo de reloj desde que se registró la subida, no tiempo jugado. Para el nivel en que empezó el registro se muestra "al menos". El `/played` real solo se puede leer desde el cliente del propio jugador (`RequestTimePlayed`).
 - "Datos curiosos" sale de `/achievements/statistics`, filtrado por ID de estadística (`FUN_STAT_IDS` en el mapper). Los IDs son iguales en todos los idiomas. Las muertes (`DEATHS_STAT_ID` = 60) se muestran aparte, arriba.
