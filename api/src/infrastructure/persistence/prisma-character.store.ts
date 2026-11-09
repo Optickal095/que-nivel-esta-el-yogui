@@ -36,7 +36,9 @@ export class PrismaCharacterStore
     return {
       profile: {
         ...(data as SerializedProfile),
-        funStats: data.funStats ?? [], // snapshots saved before this field existed
+        // snapshots saved before these fields existed
+        funStats: data.funStats ?? [],
+        deaths: data.deaths ?? null,
         lastLoginAt: new Date(data.lastLoginAt),
       },
       fetchedAt: row.fetchedAt,
@@ -71,7 +73,19 @@ export class PrismaCharacterStore
 
   async addLevelEvent(event: LevelEvent): Promise<void> {
     await this.prisma.levelEvent.create({
-      data: { level: event.level, at: event.at, source: event.source },
+      data: {
+        level: event.level,
+        at: event.at,
+        source: event.source,
+        deathsAtStart: event.deathsAtStart ?? null,
+      },
+    });
+  }
+
+  async setDeathsAtStart(level: number, deaths: number): Promise<void> {
+    await this.prisma.levelEvent.updateMany({
+      where: { level, deathsAtStart: null },
+      data: { deathsAtStart: deaths },
     });
   }
 
@@ -102,10 +116,12 @@ function toLevelEvent(row: {
   level: number;
   at: Date;
   source: string;
+  deathsAtStart: number | null;
 }): LevelEvent {
   return {
     level: row.level,
     at: row.at,
     source: row.source === 'live' ? 'live' : ('api' satisfies LevelSource),
+    deathsAtStart: row.deathsAtStart,
   };
 }

@@ -31,5 +31,7 @@ services:
         sync: false # Neon connection string (direct, not pooled: migrations need it)
       - key: LIVE_TOKEN
         generateValue: true # shared with the live bridge (phase 2)
+      - key: ADMIN_TOKEN
+        generateValue: true # moderation key for comments (read it in the Render dashboard)
       - key: WEB_ORIGIN
         value: https://optickal095.github.io

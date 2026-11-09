@@ -37,7 +37,7 @@ describe('GetCharacterOverview', () => {
     expect(overview.level).toBe(10);
     expect(store.snapshot?.fetchedAt).toEqual(clock.now());
     expect(store.events).toEqual([
-      { level: 10, at: clock.now(), source: 'api' },
+      { level: 10, at: clock.now(), source: 'api', deathsAtStart: 24 },
     ]);
   });
 
@@ -64,6 +64,29 @@ describe('GetCharacterOverview', () => {
     expect(provider.calls).toBe(2);
     expect(overview.level).toBe(11);
     expect(store.events.map((e) => e.level)).toEqual([10, 11]);
+  });
+
+  it('counts the deaths at the current level from its baseline', async () => {
+    const provider = new FakeProvider(aProfile({ level: 11, deaths: 24 }));
+    const { useCase, clock } = setup(provider);
+
+    await useCase.execute();
+    provider.result = aProfile({ level: 11, deaths: 27 });
+    clock.advance(PROFILE_MAX_AGE_MS + 1);
+    const overview = await useCase.execute();
+
+    expect(overview.deathsAtLevel).toEqual({ count: 3, exact: false });
+  });
+
+  it('fills a missing deaths baseline (level seen live first)', async () => {
+    const provider = new FakeProvider(aProfile({ level: 12, deaths: 30 }));
+    const { useCase, store, clock } = setup(provider);
+    store.events.push({ level: 12, at: clock.now(), source: 'live' });
+
+    await useCase.execute();
+
+    expect(store.events).toHaveLength(1);
+    expect(store.events[0].deathsAtStart).toBe(30);
   });
 
   it('keeps the last good snapshot when the provider fails', async () => {

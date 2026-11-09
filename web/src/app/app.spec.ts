@@ -1,7 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 import { CHARACTER_GATEWAY } from './core/application/character.gateway';
+import { COMMENTS_GATEWAY, MODERATION_KEY_STORE } from './core/application/comments.gateway';
 import { FakeCharacterGateway, anOverview } from './testing/fake-character.gateway';
+import { FakeCommentsGateway, MemoryModerationKeyStore } from './testing/fake-comments.gateway';
 
 describe('App (page)', () => {
   let gateway: FakeCharacterGateway;
@@ -16,7 +18,11 @@ describe('App (page)', () => {
     gateway = new FakeCharacterGateway();
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [{ provide: CHARACTER_GATEWAY, useValue: gateway }],
+      providers: [
+        { provide: CHARACTER_GATEWAY, useValue: gateway },
+        { provide: COMMENTS_GATEWAY, useValue: new FakeCommentsGateway() },
+        { provide: MODERATION_KEY_STORE, useValue: new MemoryModerationKeyStore() },
+      ],
     }).compileComponents();
   });
 
@@ -56,5 +62,19 @@ describe('App (page)', () => {
   it('shows an error message when the API is down', () => {
     gateway.overview = new Error('down');
     expect(render().textContent).toContain('No pudimos obtener los datos');
+  });
+
+  it('shows the deaths, total and at the current level', () => {
+    const deaths = render().querySelector('.deaths')?.textContent ?? '';
+    expect(deaths).toContain('Muertes');
+    expect(deaths).toContain('24');
+    expect(deaths).toContain('2 en nivel 10 desde que se registró');
+  });
+
+  it('shows the comments and the form', () => {
+    const page = render();
+    expect(page.textContent).toContain('Comentarios');
+    expect(page.textContent).toContain('¡Vamos Yogui!');
+    expect(page.querySelector('textarea')).not.toBeNull();
   });
 });

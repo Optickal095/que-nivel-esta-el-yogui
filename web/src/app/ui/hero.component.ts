@@ -41,6 +41,15 @@ import { PresenceBadgeComponent } from './presence-badge.component';
         </p>
         <app-presence-badge [text]="presence()" />
         <dl class="facts">
+          @if (c.deaths !== null) {
+            <div class="deaths">
+              <dt><span aria-hidden="true">💀</span> Muertes</dt>
+              <dd>{{ c.deaths }}</dd>
+              @if (deathsAtLevel(); as atLevel) {
+                <dd class="deaths-level">{{ atLevel }}</dd>
+              }
+            </div>
+          }
           <div>
             <dt>Item level</dt>
             <dd>{{ c.equippedItemLevel }}</dd>
@@ -141,6 +150,14 @@ import { PresenceBadgeComponent } from './presence-badge.component';
       font-size: 1.3rem;
       font-weight: 700;
     }
+    .deaths dd {
+      color: #ff6b6b;
+    }
+    .deaths .deaths-level {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--muted);
+    }
     @media (max-width: 640px) {
       .hero {
         grid-template-columns: 1fr;
@@ -160,6 +177,8 @@ export class HeroComponent {
   readonly character = input.required<CharacterOverview>();
   readonly presence = input.required<PresenceText>();
   readonly levelSince = input<LevelSinceText | null>(null);
+  /** e.g. "al menos 2 en nivel 13". */
+  readonly deathsAtLevel = input<string | null>(null);
 
   protected readonly color = computed(() => classColor(this.character().className));
   protected readonly initials = computed(

@@ -100,19 +100,25 @@ describe('mapBlizzardCharacter (real fixtures)', () => {
   });
 
   it('picks the curated fun stats in display order, from nested categories', () => {
-    expect(profile.funStats.slice(0, 3)).toEqual([
+    expect(profile.funStats.slice(0, 2)).toEqual([
       { id: 107, label: 'Criaturas muertas', value: 393 },
-      { id: 60, label: 'Muertes propias', value: 24 },
       { id: 1487, label: 'Golpes de gracia', value: 300 },
     ]);
     expect(profile.funStats.map((s) => s.id)).toContain(64222);
   });
 
-  it('has no fun stats when the endpoint failed', () => {
-    expect(
-      mapBlizzardCharacter({ ...bundle(), achievementStatistics: null })
-        .funStats,
-    ).toEqual([]);
+  it('takes the total deaths out of the fun stats', () => {
+    expect(profile.deaths).toBe(24);
+    expect(profile.funStats.map((s) => s.id)).not.toContain(60);
+  });
+
+  it('has no fun stats nor deaths when the endpoint failed', () => {
+    const p = mapBlizzardCharacter({
+      ...bundle(),
+      achievementStatistics: null,
+    });
+    expect(p.funStats).toEqual([]);
+    expect(p.deaths).toBeNull();
   });
 
   it('has no portrait until Blizzard renders it', () => {

@@ -120,7 +120,6 @@ function mapReputations(r: BlizzardReputations | null): Reputation[] {
  */
 export const FUN_STAT_IDS = [
   107, // Criaturas muertas
-  60, // Muertes propias
   1487, // Golpes de gracia
   347, // Comida consumida
   346, // Bebidas consumidas
@@ -129,7 +128,12 @@ export const FUN_STAT_IDS = [
   64222, // Campamentos realizados (Forever)
 ];
 
-function mapFunStats(s: BlizzardAchievementStatistics | null): FunStat[] {
+/** Total deaths: shown on its own in the hero, not among the fun facts. */
+export const DEATHS_STAT_ID = 60;
+
+function statisticsById(
+  s: BlizzardAchievementStatistics | null,
+): Map<number, FunStat> {
   const byId = new Map<number, FunStat>();
   for (const category of s?.categories ?? []) {
     const entries = [
@@ -140,7 +144,7 @@ function mapFunStats(s: BlizzardAchievementStatistics | null): FunStat[] {
       byId.set(e.id, { id: e.id, label: e.name, value: e.quantity });
     }
   }
-  return FUN_STAT_IDS.flatMap((id) => byId.get(id) ?? []);
+  return byId;
 }
 
 function asset(media: BlizzardMedia | null, key: string): string | null {
@@ -152,6 +156,7 @@ export function mapBlizzardCharacter(
   b: BlizzardCharacterBundle,
 ): CharacterProfile {
   const p = b.profile;
+  const statistics = statisticsById(b.achievementStatistics);
   return {
     name: p.name,
     surname: p.surname,
@@ -169,12 +174,13 @@ export function mapBlizzardCharacter(
     achievementPoints: p.achievement_points,
     honorableKills: b.pvp?.honorable_kills ?? 0,
     questsCompleted: b.quests?.quests.length ?? 0,
+    deaths: statistics.get(DEATHS_STAT_ID)?.value ?? null,
     portraitUrl: asset(b.media, 'main-raw') ?? asset(b.media, 'main'),
     avatarUrl: asset(b.media, 'avatar'),
     equipment: mapItems(b.equipment, b.icons),
     stats: mapStats(b.statistics),
     professions: mapProfessions(b.professions),
     reputations: mapReputations(b.reputations),
-    funStats: mapFunStats(b.achievementStatistics),
+    funStats: FUN_STAT_IDS.flatMap((id) => statistics.get(id) ?? []),
   };
 }

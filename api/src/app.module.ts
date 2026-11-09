@@ -4,6 +4,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { CharacterModule } from './character.module';
+import { CommentsModule } from './comments.module';
 import { HealthController } from './presentation/health.controller';
 
 // The compiled Angular app (web/dist), served by Nest when present (local "one URL" mode).
@@ -22,6 +23,7 @@ const WEB_DIST = join(__dirname, '..', '..', 'web', 'dist', 'web', 'browser');
         ]
       : []),
     CharacterModule,
+    CommentsModule,
   ],
   controllers: [HealthController],
 })

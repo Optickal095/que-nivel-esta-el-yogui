@@ -73,6 +73,8 @@ export interface CharacterProfile {
   achievementPoints: number;
   honorableKills: number;
   questsCompleted: number;
+  /** Total deaths (in-game statistic). null when Blizzard does not report it. */
+  deaths: number | null;
   portraitUrl: string | null; // full-body render; Blizzard can take hours to produce it
   avatarUrl: string | null;
   equipment: EquippedItem[];

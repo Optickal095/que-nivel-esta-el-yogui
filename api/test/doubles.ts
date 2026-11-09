@@ -2,6 +2,7 @@
 import {
   CharacterProfileProvider,
   Clock,
+  CommentStore,
   LevelHistoryStore,
   LiveSignalStore,
   Logger,
@@ -9,6 +10,7 @@ import {
   StoredProfile,
 } from '../src/application/ports';
 import { CharacterProfile } from '../src/domain/character-profile';
+import { Comment, CommentDraft } from '../src/domain/comment';
 import { LevelEvent } from '../src/domain/level-history';
 import { LiveSignal } from '../src/domain/presence';
 
@@ -32,6 +34,7 @@ export function aProfile(
     achievementPoints: 0,
     honorableKills: 0,
     questsCompleted: 41,
+    deaths: 24,
     portraitUrl: null,
     avatarUrl: null,
     equipment: [],
@@ -93,6 +96,12 @@ export class InMemoryStore
     this.events.push(e);
     return Promise.resolve();
   }
+  setDeathsAtStart(level: number, deaths: number) {
+    for (const e of this.events)
+      if (e.level === level && e.deathsAtStart == null)
+        e.deathsAtStart = deaths;
+    return Promise.resolve();
+  }
   getLiveSignal() {
     return Promise.resolve(this.live);
   }
@@ -106,5 +115,43 @@ export class SilentLogger implements Logger {
   messages: string[] = [];
   warn(message: string): void {
     this.messages.push(message);
+  }
+}
+
+/** In-memory CommentStore. */
+export class InMemoryCommentStore implements CommentStore {
+  rows: (Comment & { clientKey: string })[] = [];
+  private nextId = 1;
+
+  listComments(limit: number) {
+    const newest = [...this.rows]
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .slice(0, limit);
+    return Promise.resolve(
+      newest.map((r) => ({
+        id: r.id,
+        author: r.author,
+        body: r.body,
+        createdAt: r.createdAt,
+      })),
+    );
+  }
+  addComment(draft: CommentDraft, createdAt: Date, clientKey: string) {
+    const comment = { id: this.nextId++, ...draft, createdAt };
+    this.rows.push({ ...comment, clientKey });
+    return Promise.resolve(comment);
+  }
+  deleteComment(id: number) {
+    const before = this.rows.length;
+    this.rows = this.rows.filter((r) => r.id !== id);
+    return Promise.resolve(this.rows.length < before);
+  }
+  lastCommentAt(clientKey: string) {
+    const mine = this.rows.filter((r) => r.clientKey === clientKey);
+    const last = mine.reduce<Date | null>(
+      (max, r) => (max === null || r.createdAt > max ? r.createdAt : max),
+      null,
+    );
+    return Promise.resolve(last);
   }
 }

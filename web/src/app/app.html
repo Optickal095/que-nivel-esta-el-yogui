@@ -1,6 +1,11 @@
 <main>
   @if (facade.overview(); as character) {
-    <app-hero [character]="character" [presence]="presence()!" [levelSince]="levelSince()" />
+    <app-hero
+      [character]="character"
+      [presence]="presence()!"
+      [levelSince]="levelSince()"
+      [deathsAtLevel]="deathsAtLevel()"
+    />
 
     <div class="grid">
       <app-equipment class="span-2" [items]="character.equipment" />
@@ -8,6 +13,19 @@
       <app-progress [professions]="character.professions" [reputations]="character.reputations" />
       <app-fun-stats class="span-2" [stats]="character.funStats" />
       <app-level-history class="span-2" [events]="facade.history()" [now]="facade.now()" />
+      <app-comments
+        class="span-2"
+        [comments]="comments.comments()"
+        [now]="facade.now()"
+        [posting]="comments.posting()"
+        [error]="comments.error()"
+        [moderating]="comments.moderating()"
+        [posted]="comments.posted()"
+        (send)="comments.post($event)"
+        (remove)="comments.remove($event)"
+        (unlock)="comments.unlock($event)"
+        (lock)="comments.lock()"
+      />
     </div>
 
     <footer>

@@ -31,6 +31,8 @@ export class HttpCharacterGateway implements CharacterGateway {
         profileFetchedAt: new Date(dto.profileFetchedAt),
         levelSince: dto.levelSince && { ...dto.levelSince, at: new Date(dto.levelSince.at) },
         funStats: dto.funStats ?? [],
+        deaths: dto.deaths ?? null,
+        deathsAtLevel: dto.deathsAtLevel ?? null,
         presence: {
           ...dto.presence,
           lastSeenAt: dto.presence.lastSeenAt ? new Date(dto.presence.lastSeenAt) : null,

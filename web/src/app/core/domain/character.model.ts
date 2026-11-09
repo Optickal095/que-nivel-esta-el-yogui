@@ -66,6 +66,13 @@ export interface LevelSince {
   exact: boolean;
 }
 
+/** Deaths since the current level was recorded. */
+export interface DeathsAtLevel {
+  count: number;
+  /** false = counted from when the site saw the level, so it is a lower bound. */
+  exact: boolean;
+}
+
 export type PresenceStatus = 'online' | 'offline' | 'unknown';
 
 export interface Presence {
@@ -92,6 +99,9 @@ export interface CharacterOverview {
   achievementPoints: number;
   honorableKills: number;
   questsCompleted: number;
+  /** Total deaths; null when Blizzard does not report it. */
+  deaths: number | null;
+  deathsAtLevel: DeathsAtLevel | null;
   portraitUrl: string | null;
   avatarUrl: string | null;
   equipment: EquippedItem[];

@@ -1,5 +1,4 @@
 import { Logger, Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { GetCharacterOverview } from './application/get-character-overview';
 import { GetLevelHistory } from './application/get-level-history';
 import {
@@ -15,25 +14,24 @@ import {
   ProfileSnapshotStore,
 } from './application/ports';
 import { RecordLiveUpdate } from './application/record-live-update';
-import { APP_CONFIG, AppConfig, loadAppConfig } from './config/app-config';
+import { APP_CONFIG, AppConfig } from './config/app-config';
 import { BlizzardApiClient } from './infrastructure/blizzard/blizzard-api.client';
 import { BlizzardCharacterProvider } from './infrastructure/blizzard/blizzard-character.provider';
 import { PrismaCharacterStore } from './infrastructure/persistence/prisma-character.store';
 import { PrismaService } from './infrastructure/persistence/prisma.service';
-import { SystemClock } from './infrastructure/system-clock';
 import { CharacterController } from './presentation/character.controller';
 import { LiveController } from './presentation/live.controller';
 import { LiveTokenGuard } from './presentation/live-token.guard';
+import { SharedModule } from './shared.module';
 
 /**
  * Composition root for the character feature: binds each port to its adapter
  * and builds the (framework-free) use cases with factories.
  */
 @Module({
+  imports: [SharedModule],
   controllers: [CharacterController, LiveController],
   providers: [
-    { provide: APP_CONFIG, inject: [ConfigService], useFactory: loadAppConfig },
-    PrismaService,
     {
       provide: PrismaCharacterStore,
       inject: [PrismaService],
@@ -42,7 +40,6 @@ import { LiveTokenGuard } from './presentation/live-token.guard';
     { provide: PROFILE_SNAPSHOT_STORE, useExisting: PrismaCharacterStore },
     { provide: LEVEL_HISTORY_STORE, useExisting: PrismaCharacterStore },
     { provide: LIVE_SIGNAL_STORE, useExisting: PrismaCharacterStore },
-    { provide: CLOCK, useClass: SystemClock },
     {
       provide: CHARACTER_PROFILE_PROVIDER,
       inject: [APP_CONFIG],

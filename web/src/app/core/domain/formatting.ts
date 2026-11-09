@@ -1,5 +1,11 @@
 /** Pure display rules (no Angular): relative times, item colors, slot order. */
-import { EquippedItem, ItemQuality, LevelSince, Presence } from './character.model';
+import {
+  DeathsAtLevel,
+  EquippedItem,
+  ItemQuality,
+  LevelSince,
+  Presence,
+} from './character.model';
 
 const MINUTE = 60_000;
 const HOUR = 60 * MINUTE;
@@ -51,6 +57,13 @@ export function levelSinceText(
 }
 
 /** "8 nov, 21:07" in the visitor's time zone. */
+/** "3 en nivel 13" / "3 en nivel 13 desde que se registró". null when unknown. */
+export function deathsAtLevelText(deaths: DeathsAtLevel | null, level: number): string | null {
+  if (!deaths) return null;
+  const text = `${deaths.count} en nivel ${level}`;
+  return deaths.exact ? text : `${text} desde que se registró`;
+}
+
 export function shortDateTime(date: Date): string {
   const day = date.toLocaleDateString('es-CL', { day: 'numeric', month: 'short' }).replace('.', '');
   const time = date.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });

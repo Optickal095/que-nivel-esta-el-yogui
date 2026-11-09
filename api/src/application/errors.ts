@@ -13,3 +13,26 @@ export class InvalidLiveUpdateError extends Error {
     this.name = 'InvalidLiveUpdateError';
   }
 }
+
+/** A comment that breaks the rules (empty, too long...). The message is shown to the visitor. */
+export class InvalidCommentError extends Error {
+  constructor(reason: string) {
+    super(reason);
+    this.name = 'InvalidCommentError';
+  }
+}
+
+/** The same client commented less than COMMENT_COOLDOWN_MS ago. */
+export class CommentRateLimitedError extends Error {
+  constructor() {
+    super('Espera unos segundos antes de comentar de nuevo.');
+    this.name = 'CommentRateLimitedError';
+  }
+}
+
+export class CommentNotFoundError extends Error {
+  constructor(id: number) {
+    super(`Comment ${id} not found`);
+    this.name = 'CommentNotFoundError';
+  }
+}

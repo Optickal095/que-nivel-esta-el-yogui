@@ -3,15 +3,26 @@ import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from '../src/app.module';
-import { CHARACTER_PROFILE_PROVIDER, CLOCK } from '../src/application/ports';
+import {
+  CHARACTER_PROFILE_PROVIDER,
+  CLOCK,
+  COMMENT_STORE,
+} from '../src/application/ports';
 import { PrismaCharacterStore } from '../src/infrastructure/persistence/prisma-character.store';
 import { PrismaService } from '../src/infrastructure/persistence/prisma.service';
-import { FakeClock, FakeProvider, InMemoryStore, aProfile } from './doubles';
+import {
+  FakeClock,
+  FakeProvider,
+  InMemoryCommentStore,
+  InMemoryStore,
+  aProfile,
+} from './doubles';
 
 describe('Character API (e2e)', () => {
   let app: INestApplication<App>;
   let store: InMemoryStore;
   let provider: FakeProvider;
+  let comments: InMemoryCommentStore;
 
   beforeEach(async () => {
     Object.assign(process.env, {
@@ -20,8 +31,10 @@ describe('Character API (e2e)', () => {
       CHARACTER_NAME: 'Dr',
       CHARACTER_SURNAME: 'Yogui',
       LIVE_TOKEN: 'secret-token',
+      ADMIN_TOKEN: 'admin-key',
     });
     store = new InMemoryStore();
+    comments = new InMemoryCommentStore();
     provider = new FakeProvider(aProfile({ level: 10 }));
 
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] })
@@ -31,6 +44,8 @@ describe('Character API (e2e)', () => {
       .useValue(store)
       .overrideProvider(CHARACTER_PROFILE_PROVIDER)
       .useValue(provider)
+      .overrideProvider(COMMENT_STORE)
+      .useValue(comments)
       .overrideProvider(CLOCK)
       .useValue(new FakeClock(new Date('2026-11-09T02:00:00Z')))
       .compile();
@@ -53,6 +68,8 @@ describe('Character API (e2e)', () => {
       lastLoginAt: '2026-11-09T00:07:19.000Z',
       levelSince: { at: '2026-11-09T02:00:00.000Z', exact: false },
       funStats: [],
+      deaths: 24,
+      deathsAtLevel: { count: 0, exact: false },
       presence: { status: 'unknown', source: 'api' },
     });
   });
@@ -104,5 +121,67 @@ describe('Character API (e2e)', () => {
       .set('Authorization', 'Bearer secret-token')
       .send({ online: 'yes' })
       .expect(400);
+  });
+
+  it('POST then GET /api/comments', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/api/comments')
+      .send({ author: ' Edu ', body: '¡Vamos Yogui!' })
+      .expect(201);
+    expect(created.body).toEqual({
+      id: 1,
+      author: 'Edu',
+      body: '¡Vamos Yogui!',
+      createdAt: '2026-11-09T02:00:00.000Z',
+    });
+
+    const list = await request(app.getHttpServer())
+      .get('/api/comments')
+      .expect(200);
+    expect(list.body).toEqual([created.body]);
+  });
+
+  it('POST /api/comments rejects invalid, bot and too frequent comments', async () => {
+    const server = app.getHttpServer();
+    await request(server)
+      .post('/api/comments')
+      .send({ body: '  ' })
+      .expect(400);
+    await request(server)
+      .post('/api/comments')
+      .send({ body: 'spam', website: 'http://spam' })
+      .expect(400);
+    await request(server)
+      .post('/api/comments')
+      .send({ body: 'uno' })
+      .expect(201);
+    await request(server)
+      .post('/api/comments')
+      .send({ body: 'dos' })
+      .expect(429);
+  });
+
+  it('DELETE /api/comments/:id needs the admin key', async () => {
+    const server = app.getHttpServer();
+    await request(server)
+      .post('/api/comments')
+      .send({ body: 'chao' })
+      .expect(201);
+
+    await request(server).get('/api/comments/moderation').expect(401);
+    await request(server).delete('/api/comments/1').expect(401);
+    await request(server)
+      .get('/api/comments/moderation')
+      .set('Authorization', 'Bearer admin-key')
+      .expect(204);
+    await request(server)
+      .delete('/api/comments/1')
+      .set('Authorization', 'Bearer admin-key')
+      .expect(204);
+    await request(server)
+      .delete('/api/comments/1')
+      .set('Authorization', 'Bearer admin-key')
+      .expect(404);
+    expect(comments.rows).toHaveLength(0);
   });
 });

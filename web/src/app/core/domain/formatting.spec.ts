@@ -1,6 +1,7 @@
 import { EquippedItem } from './character.model';
 import {
   classColor,
+  deathsAtLevelText,
   duration,
   levelSinceText,
   presenceText,
@@ -88,5 +89,15 @@ describe('classColor', () => {
   it('uses the in-game hunter color and falls back to gold', () => {
     expect(classColor('Cazador')).toBe('#AAD372');
     expect(classColor('Desconocido')).toBe('#f8b700');
+  });
+});
+
+describe('deathsAtLevelText', () => {
+  it('says how many deaths at the level, and since when if not exact', () => {
+    expect(deathsAtLevelText({ count: 3, exact: true }, 13)).toBe('3 en nivel 13');
+    expect(deathsAtLevelText({ count: 0, exact: false }, 13)).toBe(
+      '0 en nivel 13 desde que se registró',
+    );
+    expect(deathsAtLevelText(null, 13)).toBeNull();
   });
 });

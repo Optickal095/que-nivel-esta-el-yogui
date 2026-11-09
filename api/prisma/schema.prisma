@@ -22,6 +22,8 @@ model LevelEvent {
   level  Int
   at     DateTime
   source String // 'api' | 'live'
+  /// Total deaths when this level was first recorded (baseline for "deaths at this level").
+  deathsAtStart Int?
 
   @@index([at])
 }
@@ -32,4 +34,16 @@ model LiveSignal {
   online     Boolean
   level      Int?
   observedAt DateTime
+}
+
+/// Visitors' comments. clientKey = hash of the IP (never the IP itself), for the anti-spam cooldown.
+model Comment {
+  id        Int      @id @default(autoincrement())
+  author    String   @db.VarChar(40)
+  body      String   @db.VarChar(500)
+  createdAt DateTime
+  clientKey String   @db.VarChar(64)
+
+  @@index([createdAt])
+  @@index([clientKey, createdAt])
 }

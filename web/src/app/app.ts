@@ -1,6 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
 import { CharacterFacade } from './core/application/character.facade';
-import { levelSinceText, presenceText, timeAgo } from './core/domain/formatting';
+import { CommentsFacade } from './core/application/comments.facade';
+import {
+  deathsAtLevelText,
+  levelSinceText,
+  presenceText,
+  timeAgo,
+} from './core/domain/formatting';
+import { CommentsComponent } from './ui/comments.component';
 import { EquipmentComponent } from './ui/equipment.component';
 import { FunStatsComponent } from './ui/fun-stats.component';
 import { HeroComponent } from './ui/hero.component';
@@ -18,14 +25,16 @@ import { StatsComponent } from './ui/stats.component';
     ProgressComponent,
     FunStatsComponent,
     LevelHistoryComponent,
+    CommentsComponent,
   ],
-  providers: [CharacterFacade],
+  providers: [CharacterFacade, CommentsFacade],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
   protected readonly facade = inject(CharacterFacade);
+  protected readonly comments = inject(CommentsFacade);
 
   protected readonly presence = computed(() => {
     const c = this.facade.overview();
@@ -35,6 +44,10 @@ export class App implements OnInit {
     const c = this.facade.overview();
     return c ? levelSinceText(c.levelSince, c.level, this.facade.now()) : null;
   });
+  protected readonly deathsAtLevel = computed(() => {
+    const c = this.facade.overview();
+    return c ? deathsAtLevelText(c.deathsAtLevel, c.level) : null;
+  });
   protected readonly updatedAgo = computed(() => {
     const c = this.facade.overview();
     return c ? timeAgo(c.profileFetchedAt, this.facade.now()) : null;
@@ -42,5 +55,6 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.facade.refresh();
+    this.comments.load();
   }
 }

@@ -21,6 +21,8 @@ export function anOverview(overrides: Partial<CharacterOverview> = {}): Characte
     achievementPoints: 0,
     honorableKills: 0,
     questsCompleted: 41,
+    deaths: 24,
+    deathsAtLevel: { count: 2, exact: false },
     portraitUrl: null,
     avatarUrl: null,
     equipment: [

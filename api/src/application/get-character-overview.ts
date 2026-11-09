@@ -1,4 +1,5 @@
 import { CharacterOverview, buildOverview } from '../domain/character-overview';
+import { needsDeathsBaseline } from '../domain/deaths';
 import { shouldRecordLevel } from '../domain/level-history';
 import { CharacterUnavailableError } from './errors';
 import {
@@ -84,7 +85,13 @@ export class GetCharacterOverview {
           level: profile.level,
           at: snapshot.fetchedAt,
           source: 'api',
+          deathsAtStart: profile.deaths,
         });
+      } else if (
+        profile.deaths !== null &&
+        needsDeathsBaseline(last, profile.level, profile.deaths)
+      ) {
+        await this.history.setDeathsAtStart(profile.level, profile.deaths);
       }
       return snapshot;
     } catch (error) {

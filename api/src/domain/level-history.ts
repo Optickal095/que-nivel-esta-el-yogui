@@ -9,6 +9,8 @@ export interface LevelEvent {
   level: number;
   at: Date;
   source: LevelSource;
+  /** Total deaths when this level was first recorded (baseline for "deaths at this level"). */
+  deathsAtStart?: number | null;
 }
 
 /**

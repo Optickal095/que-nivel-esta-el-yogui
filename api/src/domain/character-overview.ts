@@ -1,4 +1,5 @@
 import { CharacterProfile } from './character-profile';
+import { DeathsAtLevel, deathsAtLevel } from './deaths';
 import {
   LevelEvent,
   LevelSince,
@@ -16,6 +17,7 @@ export interface CharacterOverview {
   profile: CharacterProfile;
   level: number;
   levelSince: LevelSince | null;
+  deathsAtLevel: DeathsAtLevel | null;
   presence: Presence;
   profileFetchedAt: Date;
 }
@@ -32,6 +34,7 @@ export function buildOverview(
     profile,
     level,
     levelSince: levelSince(levelEvents, level),
+    deathsAtLevel: deathsAtLevel(levelEvents, level, profile.deaths),
     presence: resolvePresence(profile.lastLoginAt, live, now),
     profileFetchedAt,
   };

@@ -14,6 +14,7 @@ export function toOverviewDto(o: CharacterOverview) {
       at: o.levelSince.at.toISOString(),
       exact: o.levelSince.exact,
     },
+    deathsAtLevel: o.deathsAtLevel,
     presence: {
       status: o.presence.status,
       lastSeenAt: o.presence.lastSeenAt?.toISOString() ?? null,

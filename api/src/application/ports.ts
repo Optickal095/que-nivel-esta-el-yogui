@@ -3,6 +3,7 @@
  * Small, consumer-specific interfaces (ISP); infrastructure implements them.
  */
 import { CharacterProfile } from '../domain/character-profile';
+import { Comment, CommentDraft } from '../domain/comment';
 import { LevelEvent } from '../domain/level-history';
 import { LiveSignal } from '../domain/presence';
 
@@ -26,11 +27,27 @@ export interface LevelHistoryStore {
   getLastLevelEvent(): Promise<LevelEvent | null>;
   getLevelEvents(): Promise<LevelEvent[]>;
   addLevelEvent(event: LevelEvent): Promise<void>;
+  /** Sets the deaths baseline of `level` if it has none yet. */
+  setDeathsAtStart(level: number, deaths: number): Promise<void>;
 }
 
 export interface LiveSignalStore {
   getLiveSignal(): Promise<LiveSignal | null>;
   saveLiveSignal(signal: LiveSignal): Promise<void>;
+}
+
+export interface CommentStore {
+  /** Newest first. */
+  listComments(limit: number): Promise<Comment[]>;
+  addComment(
+    draft: CommentDraft,
+    createdAt: Date,
+    clientKey: string,
+  ): Promise<Comment>;
+  /** false when it did not exist. */
+  deleteComment(id: number): Promise<boolean>;
+  /** When this client last commented (for the anti-spam cooldown). */
+  lastCommentAt(clientKey: string): Promise<Date | null>;
 }
 
 export interface Clock {
@@ -46,4 +63,5 @@ export const CHARACTER_PROFILE_PROVIDER = Symbol('CharacterProfileProvider');
 export const PROFILE_SNAPSHOT_STORE = Symbol('ProfileSnapshotStore');
 export const LEVEL_HISTORY_STORE = Symbol('LevelHistoryStore');
 export const LIVE_SIGNAL_STORE = Symbol('LiveSignalStore');
+export const COMMENT_STORE = Symbol('CommentStore');
 export const CLOCK = Symbol('Clock');
