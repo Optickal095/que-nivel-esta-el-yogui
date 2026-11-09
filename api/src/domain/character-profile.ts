@@ -16,7 +16,6 @@ export type ItemQuality =
 export interface EquippedItem {
   slot: string; // stable key, e.g. 'CHEST'
   slotName: string; // localized, e.g. 'Torso'
-  itemId: number;
   name: string;
   quality: ItemQuality;
   itemLevel: number;
@@ -60,14 +59,11 @@ export interface CharacterProfile {
   name: string;
   surname: string;
   level: number;
-  experience: number;
   className: string;
   race: string;
-  gender: string;
   faction: string;
   ruleset: string;
   guild: string | null;
-  averageItemLevel: number;
   equippedItemLevel: number;
   lastLoginAt: Date;
   achievementPoints: number;
@@ -76,7 +72,6 @@ export interface CharacterProfile {
   /** Total deaths (in-game statistic). null when Blizzard does not report it. */
   deaths: number | null;
   portraitUrl: string | null; // full-body render; Blizzard can take hours to produce it
-  avatarUrl: string | null;
   equipment: EquippedItem[];
   stats: CharacterStats | null;
   professions: Profession[];

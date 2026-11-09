@@ -7,21 +7,16 @@ import {
   CharacterProfileProvider,
   Clock,
   LEVEL_HISTORY_STORE,
-  LIVE_SIGNAL_STORE,
   LevelHistoryStore,
-  LiveSignalStore,
   PROFILE_SNAPSHOT_STORE,
   ProfileSnapshotStore,
 } from './application/ports';
-import { RecordLiveUpdate } from './application/record-live-update';
 import { APP_CONFIG, AppConfig } from './config/app-config';
 import { BlizzardApiClient } from './infrastructure/blizzard/blizzard-api.client';
 import { BlizzardCharacterProvider } from './infrastructure/blizzard/blizzard-character.provider';
 import { PrismaCharacterStore } from './infrastructure/persistence/prisma-character.store';
 import { PrismaService } from './infrastructure/persistence/prisma.service';
 import { CharacterController } from './presentation/character.controller';
-import { LiveController } from './presentation/live.controller';
-import { LiveTokenGuard } from './presentation/live-token.guard';
 import { SharedModule } from './shared.module';
 
 /**
@@ -30,7 +25,7 @@ import { SharedModule } from './shared.module';
  */
 @Module({
   imports: [SharedModule],
-  controllers: [CharacterController, LiveController],
+  controllers: [CharacterController],
   providers: [
     {
       provide: PrismaCharacterStore,
@@ -39,7 +34,6 @@ import { SharedModule } from './shared.module';
     },
     { provide: PROFILE_SNAPSHOT_STORE, useExisting: PrismaCharacterStore },
     { provide: LEVEL_HISTORY_STORE, useExisting: PrismaCharacterStore },
-    { provide: LIVE_SIGNAL_STORE, useExisting: PrismaCharacterStore },
     {
       provide: CHARACTER_PROFILE_PROVIDER,
       inject: [APP_CONFIG],
@@ -57,21 +51,18 @@ import { SharedModule } from './shared.module';
         CHARACTER_PROFILE_PROVIDER,
         PROFILE_SNAPSHOT_STORE,
         LEVEL_HISTORY_STORE,
-        LIVE_SIGNAL_STORE,
         CLOCK,
       ],
       useFactory: (
         provider: CharacterProfileProvider,
         snapshots: ProfileSnapshotStore,
         history: LevelHistoryStore,
-        live: LiveSignalStore,
         clock: Clock,
       ) =>
         new GetCharacterOverview(
           provider,
           snapshots,
           history,
-          live,
           clock,
           new Logger('GetCharacterOverview'),
         ),
@@ -81,16 +72,6 @@ import { SharedModule } from './shared.module';
       inject: [LEVEL_HISTORY_STORE],
       useFactory: (history: LevelHistoryStore) => new GetLevelHistory(history),
     },
-    {
-      provide: RecordLiveUpdate,
-      inject: [LIVE_SIGNAL_STORE, LEVEL_HISTORY_STORE, CLOCK],
-      useFactory: (
-        live: LiveSignalStore,
-        history: LevelHistoryStore,
-        clock: Clock,
-      ) => new RecordLiveUpdate(live, history, clock),
-    },
-    LiveTokenGuard,
   ],
 })
 export class CharacterModule {}

@@ -4,7 +4,6 @@ import {
   Clock,
   CommentStore,
   LevelHistoryStore,
-  LiveSignalStore,
   Logger,
   ProfileSnapshotStore,
   StoredProfile,
@@ -12,7 +11,6 @@ import {
 import { CharacterProfile } from '../src/domain/character-profile';
 import { Comment, CommentDraft } from '../src/domain/comment';
 import { LevelEvent } from '../src/domain/level-history';
-import { LiveSignal } from '../src/domain/presence';
 
 export function aProfile(
   overrides: Partial<CharacterProfile> = {},
@@ -21,14 +19,11 @@ export function aProfile(
     name: 'Dr',
     surname: 'Yogui',
     level: 10,
-    experience: 3875,
     className: 'Cazador',
     race: 'Tauren',
-    gender: 'Masculino',
     faction: 'Horda',
     ruleset: 'JcJ',
     guild: null,
-    averageItemLevel: 4,
     equippedItemLevel: 4,
     lastLoginAt: new Date('2026-11-09T00:07:19Z'),
     achievementPoints: 0,
@@ -36,7 +31,6 @@ export function aProfile(
     questsCompleted: 41,
     deaths: 24,
     portraitUrl: null,
-    avatarUrl: null,
     equipment: [],
     stats: null,
     professions: [],
@@ -70,13 +64,10 @@ export class FakeProvider implements CharacterProfileProvider {
   }
 }
 
-/** In-memory implementation of the three storage ports. */
-export class InMemoryStore
-  implements ProfileSnapshotStore, LevelHistoryStore, LiveSignalStore
-{
+/** In-memory implementation of the character storage ports. */
+export class InMemoryStore implements ProfileSnapshotStore, LevelHistoryStore {
   snapshot: StoredProfile | null = null;
   events: LevelEvent[] = [];
-  live: LiveSignal | null = null;
 
   getSnapshot() {
     return Promise.resolve(this.snapshot);
@@ -100,13 +91,6 @@ export class InMemoryStore
     for (const e of this.events)
       if (e.level === level && e.deathsAtStart == null)
         e.deathsAtStart = deaths;
-    return Promise.resolve();
-  }
-  getLiveSignal() {
-    return Promise.resolve(this.live);
-  }
-  saveLiveSignal(s: LiveSignal) {
-    this.live = s;
     return Promise.resolve();
   }
 }

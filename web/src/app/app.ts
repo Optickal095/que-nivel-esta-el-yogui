@@ -5,7 +5,7 @@ import { CommentsFacade } from './core/application/comments.facade';
 import {
   deathsAtLevelText,
   levelSinceText,
-  presenceText,
+  lastLoginText,
   timeAgo,
 } from './core/domain/formatting';
 import { CommentsComponent } from './ui/comments.component';
@@ -41,9 +41,9 @@ export class App implements OnInit {
     inject(DOCUMENT).location.search,
   ).has('moderar');
 
-  protected readonly presence = computed(() => {
+  protected readonly lastLogin = computed(() => {
     const c = this.facade.overview();
-    return c ? presenceText(c.presence, this.facade.now()) : null;
+    return c ? lastLoginText(c.lastLoginAt, this.facade.now()) : null;
   });
   protected readonly levelSince = computed(() => {
     const c = this.facade.overview();

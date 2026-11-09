@@ -4,7 +4,6 @@ import {
   EquippedItem,
   ItemQuality,
   LevelSince,
-  Presence,
 } from './character.model';
 
 const MINUTE = 60_000;
@@ -51,7 +50,8 @@ export function levelSinceText(
   return since.exact
     ? { text: `Lleva ${elapsed} en nivel ${level}`, note: null }
     : {
-        text: `Lleva al menos ${elapsed} en nivel ${level}`,
+        // "al menos menos de 1 min" reads badly: drop the "al menos" there.
+        text: `Lleva ${elapsed.startsWith('menos') ? '' : 'al menos '}${elapsed} en nivel ${level}`,
         note: `Contando desde que el sitio empezó a registrarlo (${shortDateTime(since.at)}).`,
       };
 }
@@ -70,23 +70,9 @@ export function shortDateTime(date: Date): string {
   return `${day}, ${time}`;
 }
 
-export interface PresenceText {
-  label: string;
-  detail: string | null;
-  tone: 'online' | 'offline' | 'unknown';
-}
-
-export function presenceText(presence: Presence, now: Date): PresenceText {
-  const seen = presence.lastSeenAt;
-  const when = seen ? `${timeAgo(seen, now)} (${shortDateTime(seen)})` : null;
-  switch (presence.status) {
-    case 'online':
-      return { label: 'Conectado ahora', detail: null, tone: 'online' };
-    case 'offline':
-      return { label: 'Desconectado', detail: when && `Visto por última vez ${when}`, tone: 'offline' };
-    default:
-      return { label: 'Última conexión', detail: when, tone: 'unknown' };
-  }
+/** "hace 2 h (9 nov, 01:24 a. m.)": when the character last logged in. */
+export function lastLoginText(lastLoginAt: Date, now: Date): string {
+  return `${timeAgo(lastLoginAt, now)} (${shortDateTime(lastLoginAt)})`;
 }
 
 /** In-game item quality colors. */

@@ -13,7 +13,6 @@ export type ItemQuality =
 export interface EquippedItem {
   slot: string;
   slotName: string;
-  itemId: number;
   name: string;
   quality: ItemQuality;
   itemLevel: number;
@@ -73,27 +72,15 @@ export interface DeathsAtLevel {
   exact: boolean;
 }
 
-export type PresenceStatus = 'online' | 'offline' | 'unknown';
-
-export interface Presence {
-  status: PresenceStatus;
-  lastSeenAt: Date | null;
-  source: 'api' | 'live';
-}
-
 export interface CharacterOverview {
   name: string;
   surname: string;
   level: number;
-  apiLevel: number;
-  experience: number;
   className: string;
   race: string;
-  gender: string;
   faction: string;
   ruleset: string;
   guild: string | null;
-  averageItemLevel: number;
   equippedItemLevel: number;
   lastLoginAt: Date;
   achievementPoints: number;
@@ -103,19 +90,16 @@ export interface CharacterOverview {
   deaths: number | null;
   deathsAtLevel: DeathsAtLevel | null;
   portraitUrl: string | null;
-  avatarUrl: string | null;
   equipment: EquippedItem[];
   stats: CharacterStats | null;
   professions: Profession[];
   reputations: Reputation[];
   funStats: FunStat[];
   levelSince: LevelSince | null;
-  presence: Presence;
   profileFetchedAt: Date;
 }
 
 export interface LevelEvent {
   level: number;
   at: Date;
-  source: 'api' | 'live';
 }

@@ -22,15 +22,12 @@ export interface BlizzardProfile {
   name: string;
   surname: string;
   level: number;
-  experience: number;
-  gender: Typed;
   faction: Typed;
   race: Named;
   character_class: Named;
   ruleset?: Named;
   guild?: Named;
   last_login_timestamp: number;
-  average_item_level: number;
   equipped_item_level: number;
   achievement_points: number;
 }

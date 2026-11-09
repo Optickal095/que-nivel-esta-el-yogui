@@ -1,14 +1,8 @@
-import {
-  currentLevel,
-  highestLevelEvent,
-  levelSince,
-  shouldRecordLevel,
-} from './level-history';
+import { levelSince, shouldRecordLevel } from './level-history';
 
 const event = (level: number) => ({
   level,
   at: new Date('2026-11-01T00:00:00Z'),
-  source: 'api' as const,
 });
 
 describe('shouldRecordLevel', () => {
@@ -35,7 +29,6 @@ describe('levelSince', () => {
   const at = (iso: string, level: number) => ({
     level,
     at: new Date(iso),
-    source: 'api' as const,
   });
 
   it('is exact when the previous level was seen', () => {
@@ -58,22 +51,5 @@ describe('levelSince', () => {
 
   it('is null when the level was never recorded', () => {
     expect(levelSince([at('2026-11-08T00:00:00Z', 10)], 12)).toBeNull();
-  });
-});
-
-describe('highestLevelEvent', () => {
-  it('returns the highest level, or null when empty', () => {
-    expect(highestLevelEvent([event(10), event(12), event(11)])?.level).toBe(
-      12,
-    );
-    expect(highestLevelEvent([])).toBeNull();
-  });
-});
-
-describe('currentLevel', () => {
-  it('is the highest of the API level and the recorded one', () => {
-    expect(currentLevel(10, null)).toBe(10);
-    expect(currentLevel(10, event(12))).toBe(12);
-    expect(currentLevel(13, event(12))).toBe(13);
   });
 });

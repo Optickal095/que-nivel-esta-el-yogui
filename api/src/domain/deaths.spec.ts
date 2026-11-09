@@ -8,13 +8,11 @@ describe('deathsAtLevel', () => {
     {
       level: 10,
       at: at('2026-11-09T01:00:00Z'),
-      source: 'api',
       deathsAtStart: 20,
     },
     {
       level: 11,
       at: at('2026-11-09T02:00:00Z'),
-      source: 'api',
       deathsAtStart: 24,
     },
   ];
@@ -29,7 +27,7 @@ describe('deathsAtLevel', () => {
 
   it('is unknown without baseline, without total or for an unseen level', () => {
     const noBaseline: LevelEvent[] = [
-      { level: 12, at: at('2026-11-09T03:00:00Z'), source: 'live' },
+      { level: 12, at: at('2026-11-09T03:00:00Z') },
     ];
     expect(deathsAtLevel(noBaseline, 12, 30)).toBeNull();
     expect(deathsAtLevel(events, 11, null)).toBeNull();
@@ -42,22 +40,21 @@ describe('deathsAtLevel', () => {
 });
 
 describe('needsDeathsBaseline', () => {
-  const live: LevelEvent = {
+  const noBaseline: LevelEvent = {
     level: 12,
     at: at('2026-11-09T03:00:00Z'),
-    source: 'live',
   };
 
   it('fills the baseline of the current level when it is missing', () => {
-    expect(needsDeathsBaseline(live, 12, 30)).toBe(true);
+    expect(needsDeathsBaseline(noBaseline, 12, 30)).toBe(true);
   });
 
   it('does nothing when it already has one, for another level or without deaths', () => {
-    expect(needsDeathsBaseline({ ...live, deathsAtStart: 25 }, 12, 30)).toBe(
-      false,
-    );
-    expect(needsDeathsBaseline(live, 11, 30)).toBe(false);
-    expect(needsDeathsBaseline(live, 12, null)).toBe(false);
+    expect(
+      needsDeathsBaseline({ ...noBaseline, deathsAtStart: 25 }, 12, 30),
+    ).toBe(false);
+    expect(needsDeathsBaseline(noBaseline, 11, 30)).toBe(false);
+    expect(needsDeathsBaseline(noBaseline, 12, null)).toBe(false);
     expect(needsDeathsBaseline(null, 12, 30)).toBe(false);
   });
 });

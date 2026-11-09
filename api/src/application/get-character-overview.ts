@@ -6,7 +6,6 @@ import {
   CharacterProfileProvider,
   Clock,
   LevelHistoryStore,
-  LiveSignalStore,
   Logger,
   ProfileSnapshotStore,
   StoredProfile,
@@ -27,7 +26,6 @@ export class GetCharacterOverview {
     private readonly provider: CharacterProfileProvider,
     private readonly snapshots: ProfileSnapshotStore,
     private readonly history: LevelHistoryStore,
-    private readonly live: LiveSignalStore,
     private readonly clock: Clock,
     private readonly logger: Logger,
     private readonly maxAgeMs: number = PROFILE_MAX_AGE_MS,
@@ -45,17 +43,8 @@ export class GetCharacterOverview {
       );
     }
 
-    const [levelEvents, liveSignal] = await Promise.all([
-      this.history.getLevelEvents(),
-      this.live.getLiveSignal(),
-    ]);
-    return buildOverview(
-      snapshot.profile,
-      snapshot.fetchedAt,
-      levelEvents,
-      liveSignal,
-      this.clock.now(),
-    );
+    const levelEvents = await this.history.getLevelEvents();
+    return buildOverview(snapshot.profile, snapshot.fetchedAt, levelEvents);
   }
 
   private isStale(snapshot: StoredProfile): boolean {
@@ -84,7 +73,6 @@ export class GetCharacterOverview {
         await this.history.addLevelEvent({
           level: profile.level,
           at: snapshot.fetchedAt,
-          source: 'api',
           deathsAtStart: profile.deaths,
         });
       } else if (

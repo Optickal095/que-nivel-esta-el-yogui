@@ -6,8 +6,6 @@ export function toOverviewDto(o: CharacterOverview) {
   const { lastLoginAt, ...profile } = o.profile;
   return {
     ...profile,
-    level: o.level, // freshest known (may be ahead of the API thanks to live data)
-    apiLevel: o.profile.level,
     lastLoginAt: lastLoginAt.toISOString(),
     // Real time at the current level (Blizzard does not expose /played).
     levelSince: o.levelSince && {
@@ -15,15 +13,10 @@ export function toOverviewDto(o: CharacterOverview) {
       exact: o.levelSince.exact,
     },
     deathsAtLevel: o.deathsAtLevel,
-    presence: {
-      status: o.presence.status,
-      lastSeenAt: o.presence.lastSeenAt?.toISOString() ?? null,
-      source: o.presence.source,
-    },
     profileFetchedAt: o.profileFetchedAt.toISOString(),
   };
 }
 
 export function toLevelEventDto(e: LevelEvent) {
-  return { level: e.level, at: e.at.toISOString(), source: e.source };
+  return { level: e.level, at: e.at.toISOString() };
 }

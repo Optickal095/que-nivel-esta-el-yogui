@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { CharacterOverview } from '../core/domain/character.model';
-import { LevelSinceText, PresenceText, classColor } from '../core/domain/formatting';
-import { PresenceBadgeComponent } from './presence-badge.component';
+import { LevelSinceText, classColor } from '../core/domain/formatting';
+import { LastLoginComponent } from './last-login.component';
 
 @Component({
   selector: 'app-hero',
-  imports: [PresenceBadgeComponent],
+  imports: [LastLoginComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let c = character();
@@ -39,7 +39,7 @@ import { PresenceBadgeComponent } from './presence-badge.component';
             · &lt;{{ c.guild }}&gt;
           }
         </p>
-        <app-presence-badge [text]="presence()" />
+        <app-last-login [text]="lastLogin()" />
         <dl class="facts">
           @if (c.deaths !== null) {
             <div class="deaths">
@@ -175,7 +175,7 @@ import { PresenceBadgeComponent } from './presence-badge.component';
 })
 export class HeroComponent {
   readonly character = input.required<CharacterOverview>();
-  readonly presence = input.required<PresenceText>();
+  readonly lastLogin = input.required<string>();
   readonly levelSince = input<LevelSinceText | null>(null);
   /** e.g. "al menos 2 en nivel 13". */
   readonly deathsAtLevel = input<string | null>(null);

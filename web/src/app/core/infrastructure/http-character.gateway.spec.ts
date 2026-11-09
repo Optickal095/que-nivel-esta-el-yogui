@@ -32,13 +32,11 @@ describe('HttpCharacterGateway', () => {
       lastLoginAt: '2026-11-09T00:07:19.000Z',
       profileFetchedAt: '2026-11-09T02:00:00.000Z',
       levelSince: { at: '2026-11-09T02:00:00.000Z', exact: false },
-      presence: { status: 'unknown', lastSeenAt: null, source: 'api' },
     });
 
     const overview = await result;
     expect(overview.lastLoginAt).toEqual(new Date('2026-11-09T00:07:19.000Z'));
     expect(overview.levelSince?.at).toEqual(new Date('2026-11-09T02:00:00.000Z'));
-    expect(overview.presence.lastSeenAt).toBeNull();
     expect(overview.funStats).toEqual([]);
   });
 
@@ -46,7 +44,7 @@ describe('HttpCharacterGateway', () => {
     const result = firstValueFrom(gateway.getLevelHistory());
     http
       .expectOne('https://api.example.com/api/character/history')
-      .flush([{ level: 10, at: '2026-11-09T02:00:00.000Z', source: 'api' }]);
+      .flush([{ level: 10, at: '2026-11-09T02:00:00.000Z' }]);
     expect((await result)[0].at).toEqual(new Date('2026-11-09T02:00:00.000Z'));
   });
 });

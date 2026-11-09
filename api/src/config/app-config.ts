@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 export interface AppConfig {
   blizzard: { clientId: string; clientSecret: string; region: string };
   character: { name: string; surname: string };
-  liveToken: string | null;
   adminToken: string | null;
 }
 
@@ -28,7 +27,6 @@ export function loadAppConfig(config: ConfigService): AppConfig {
       name: required('CHARACTER_NAME'),
       surname: required('CHARACTER_SURNAME'),
     },
-    liveToken: config.get<string>('LIVE_TOKEN')?.trim() || null,
     adminToken: config.get<string>('ADMIN_TOKEN')?.trim() || null,
   };
 }

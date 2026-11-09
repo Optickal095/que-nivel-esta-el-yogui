@@ -66,7 +66,6 @@ describe('mapBlizzardCharacter (real fixtures)', () => {
     expect(profile.equipment.find((i) => i.slot === 'RANGED')).toEqual({
       slot: 'RANGED',
       slotName: 'A distancia',
-      itemId: 4577,
       name: 'Escopeta compacta',
       quality: 'UNCOMMON',
       itemLevel: 13,
@@ -133,6 +132,5 @@ describe('mapBlizzardCharacter (real fixtures)', () => {
       },
     });
     expect(withMedia.portraitUrl).toBe('https://render/x.png');
-    expect(withMedia.avatarUrl).toBe('https://render/a.jpg');
   });
 });

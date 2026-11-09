@@ -1,13 +1,11 @@
 import { Prisma } from '@prisma/client';
 import {
   LevelHistoryStore,
-  LiveSignalStore,
   ProfileSnapshotStore,
   StoredProfile,
 } from '../../application/ports';
 import { CharacterProfile } from '../../domain/character-profile';
-import { LevelEvent, LevelSource } from '../../domain/level-history';
-import { LiveSignal } from '../../domain/presence';
+import { LevelEvent } from '../../domain/level-history';
 import { PrismaService } from './prisma.service';
 
 const SINGLETON_ID = 1;
@@ -17,12 +15,12 @@ type SerializedProfile = Omit<CharacterProfile, 'lastLoginAt'> & {
 };
 
 /**
- * Repository: implements the three storage ports on Postgres via Prisma.
+ * Repository: implements the two storage ports on Postgres via Prisma.
  * One class because they share the connection, but each use case only sees
  * the port it needs.
  */
 export class PrismaCharacterStore
-  implements ProfileSnapshotStore, LevelHistoryStore, LiveSignalStore
+  implements ProfileSnapshotStore, LevelHistoryStore
 {
   constructor(private readonly prisma: PrismaService) {}
 
@@ -76,7 +74,6 @@ export class PrismaCharacterStore
       data: {
         level: event.level,
         at: event.at,
-        source: event.source,
         deathsAtStart: event.deathsAtStart ?? null,
       },
     });
@@ -88,40 +85,16 @@ export class PrismaCharacterStore
       data: { deathsAtStart: deaths },
     });
   }
-
-  async getLiveSignal(): Promise<LiveSignal | null> {
-    const row = await this.prisma.liveSignal.findUnique({
-      where: { id: SINGLETON_ID },
-    });
-    return row
-      ? { online: row.online, level: row.level, observedAt: row.observedAt }
-      : null;
-  }
-
-  async saveLiveSignal(signal: LiveSignal): Promise<void> {
-    const data = {
-      online: signal.online,
-      level: signal.level,
-      observedAt: signal.observedAt,
-    };
-    await this.prisma.liveSignal.upsert({
-      where: { id: SINGLETON_ID },
-      create: { id: SINGLETON_ID, ...data },
-      update: data,
-    });
-  }
 }
 
 function toLevelEvent(row: {
   level: number;
   at: Date;
-  source: string;
   deathsAtStart: number | null;
 }): LevelEvent {
   return {
     level: row.level,
     at: row.at,
-    source: row.source === 'live' ? 'live' : ('api' satisfies LevelSource),
     deathsAtStart: row.deathsAtStart,
   };
 }

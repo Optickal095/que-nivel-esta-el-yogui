@@ -49,16 +49,6 @@ describe('App (page)', () => {
     expect(page.textContent).toContain('Criaturas muertas');
   });
 
-  it('shows "Conectado ahora" when live presence says online', () => {
-    gateway.overview = anOverview({
-      level: 11,
-      presence: { status: 'online', lastSeenAt: new Date(), source: 'live' },
-    });
-    const page = render();
-    expect(page.textContent).toContain('Conectado ahora');
-    expect(page.querySelector('.answer')?.textContent).toContain('11');
-  });
-
   it('shows an error message when the API is down', () => {
     gateway.overview = new Error('down');
     expect(render().textContent).toContain('No pudimos obtener los datos');

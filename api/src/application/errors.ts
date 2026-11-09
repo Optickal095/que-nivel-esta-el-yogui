@@ -6,14 +6,6 @@ export class CharacterUnavailableError extends Error {
   }
 }
 
-/** Input from the live bridge that breaks the rules (e.g. invalid level). */
-export class InvalidLiveUpdateError extends Error {
-  constructor(reason: string) {
-    super(reason);
-    this.name = 'InvalidLiveUpdateError';
-  }
-}
-
 /** A comment that breaks the rules (empty, too long...). The message is shown to the visitor. */
 export class InvalidCommentError extends Error {
   constructor(reason: string) {

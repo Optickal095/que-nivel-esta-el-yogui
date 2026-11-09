@@ -30,7 +30,6 @@ describe('Character API (e2e)', () => {
       BLIZZARD_CLIENT_SECRET: 'test',
       CHARACTER_NAME: 'Dr',
       CHARACTER_SURNAME: 'Yogui',
-      LIVE_TOKEN: 'secret-token',
       ADMIN_TOKEN: 'admin-key',
     });
     store = new InMemoryStore();
@@ -70,57 +69,12 @@ describe('Character API (e2e)', () => {
       funStats: [],
       deaths: 24,
       deathsAtLevel: { count: 0, exact: false },
-      presence: { status: 'unknown', source: 'api' },
     });
   });
 
   it('GET /api/character returns 503 when the character is not available', async () => {
     provider.result = null;
     await request(app.getHttpServer()).get('/api/character').expect(503);
-  });
-
-  it('POST /api/live requires the token', async () => {
-    await request(app.getHttpServer())
-      .post('/api/live')
-      .send({ online: true, level: 11 })
-      .expect(401);
-    await request(app.getHttpServer())
-      .post('/api/live')
-      .set('Authorization', 'Bearer wrong')
-      .send({ online: true, level: 11 })
-      .expect(401);
-  });
-
-  it('POST /api/live updates presence, level and history', async () => {
-    await request(app.getHttpServer())
-      .post('/api/live')
-      .set('Authorization', 'Bearer secret-token')
-      .send({ online: true, level: 11 })
-      .expect(204);
-
-    const overview = await request(app.getHttpServer())
-      .get('/api/character')
-      .expect(200);
-    expect(overview.body).toMatchObject({
-      level: 11,
-      apiLevel: 10,
-      presence: { status: 'online', source: 'live' },
-    });
-
-    const history = await request(app.getHttpServer())
-      .get('/api/character/history')
-      .expect(200);
-    expect(history.body).toEqual([
-      { level: 11, at: '2026-11-09T02:00:00.000Z', source: 'live' },
-    ]);
-  });
-
-  it('POST /api/live rejects a malformed body', async () => {
-    await request(app.getHttpServer())
-      .post('/api/live')
-      .set('Authorization', 'Bearer secret-token')
-      .send({ online: 'yes' })
-      .expect(400);
   });
 
   it('POST then GET /api/comments', async () => {

@@ -3,8 +3,8 @@ import {
   classColor,
   deathsAtLevelText,
   duration,
+  lastLoginText,
   levelSinceText,
-  presenceText,
   sortBySlot,
   timeAgo,
 } from './formatting';
@@ -38,6 +38,11 @@ describe('duration', () => {
 });
 
 describe('levelSinceText', () => {
+  it('does not say "al menos menos de 1 min"', () => {
+    const text = levelSinceText({ at: ago(10_000), exact: false }, 13, now);
+    expect(text?.text).toBe('Lleva menos de 1 min en nivel 13');
+  });
+
   it('states an exact time at the level', () => {
     const text = levelSinceText({ at: ago(3 * 3_600_000), exact: true }, 11, now);
     expect(text).toEqual({ text: 'Lleva 3 h en nivel 11', note: null });
@@ -54,25 +59,12 @@ describe('levelSinceText', () => {
   });
 });
 
-describe('presenceText', () => {
-  it('says online without detail', () => {
-    expect(presenceText({ status: 'online', lastSeenAt: now, source: 'live' }, now)).toEqual({
-      label: 'Conectado ahora',
-      detail: null,
-      tone: 'online',
-    });
-  });
-
-  it('shows the last connection when unknown', () => {
-    const text = presenceText({ status: 'unknown', lastSeenAt: ago(2 * 3_600_000), source: 'api' }, now);
-    expect(text.label).toBe('Última conexión');
-    expect(text.detail).toContain('hace 2 h');
-  });
-
-  it('says offline with last seen', () => {
-    const text = presenceText({ status: 'offline', lastSeenAt: ago(5 * 60_000), source: 'live' }, now);
-    expect(text.label).toBe('Desconectado');
-    expect(text.detail).toContain('hace 5 min');
+describe('lastLoginText', () => {
+  it('says how long ago and when', () => {
+    const now = new Date('2026-11-09T12:00:00Z');
+    const text = lastLoginText(new Date('2026-11-09T10:00:00Z'), now);
+    expect(text).toContain('hace 2 h');
+    expect(text).toContain('(');
   });
 });
 

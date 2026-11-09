@@ -7,15 +7,11 @@ export function anOverview(overrides: Partial<CharacterOverview> = {}): Characte
     name: 'Dr',
     surname: 'Yogui',
     level: 10,
-    apiLevel: 10,
-    experience: 3875,
     className: 'Cazador',
     race: 'Tauren',
-    gender: 'Masculino',
     faction: 'Horda',
     ruleset: 'JcJ',
     guild: null,
-    averageItemLevel: 4,
     equippedItemLevel: 4,
     lastLoginAt: new Date('2026-11-09T00:07:19Z'),
     achievementPoints: 0,
@@ -24,12 +20,10 @@ export function anOverview(overrides: Partial<CharacterOverview> = {}): Characte
     deaths: 24,
     deathsAtLevel: { count: 2, exact: false },
     portraitUrl: null,
-    avatarUrl: null,
     equipment: [
       {
         slot: 'RANGED',
         slotName: 'A distancia',
-        itemId: 4577,
         name: 'Escopeta compacta',
         quality: 'UNCOMMON',
         itemLevel: 13,
@@ -42,7 +36,6 @@ export function anOverview(overrides: Partial<CharacterOverview> = {}): Characte
     reputations: [],
     funStats: [{ id: 107, label: 'Criaturas muertas', value: 393 }],
     levelSince: { at: new Date('2026-11-09T02:00:00Z'), exact: false },
-    presence: { status: 'unknown', lastSeenAt: new Date('2026-11-09T00:07:19Z'), source: 'api' },
     profileFetchedAt: new Date('2026-11-09T02:00:00Z'),
     ...overrides,
   };
@@ -51,7 +44,7 @@ export function anOverview(overrides: Partial<CharacterOverview> = {}): Characte
 /** Test double for the CharacterGateway port. */
 export class FakeCharacterGateway implements CharacterGateway {
   overview: CharacterOverview | Error = anOverview();
-  history: LevelEvent[] = [{ level: 10, at: new Date('2026-11-09T02:00:00Z'), source: 'api' }];
+  history: LevelEvent[] = [{ level: 10, at: new Date('2026-11-09T02:00:00Z') }];
   calls = 0;
 
   getOverview(): Observable<CharacterOverview> {

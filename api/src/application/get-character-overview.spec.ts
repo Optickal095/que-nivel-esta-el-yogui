@@ -19,7 +19,6 @@ function setup(provider: FakeProvider) {
     provider,
     store,
     store,
-    store,
     clock,
     logger,
   );
@@ -34,10 +33,10 @@ describe('GetCharacterOverview', () => {
 
     const overview = await useCase.execute();
 
-    expect(overview.level).toBe(10);
+    expect(overview.profile.level).toBe(10);
     expect(store.snapshot?.fetchedAt).toEqual(clock.now());
     expect(store.events).toEqual([
-      { level: 10, at: clock.now(), source: 'api', deathsAtStart: 24 },
+      { level: 10, at: clock.now(), deathsAtStart: 24 },
     ]);
   });
 
@@ -62,7 +61,7 @@ describe('GetCharacterOverview', () => {
     const overview = await useCase.execute();
 
     expect(provider.calls).toBe(2);
-    expect(overview.level).toBe(11);
+    expect(overview.profile.level).toBe(11);
     expect(store.events.map((e) => e.level)).toEqual([10, 11]);
   });
 
@@ -78,10 +77,10 @@ describe('GetCharacterOverview', () => {
     expect(overview.deathsAtLevel).toEqual({ count: 3, exact: false });
   });
 
-  it('fills a missing deaths baseline (level seen live first)', async () => {
+  it('fills a missing deaths baseline', async () => {
     const provider = new FakeProvider(aProfile({ level: 12, deaths: 30 }));
     const { useCase, store, clock } = setup(provider);
-    store.events.push({ level: 12, at: clock.now(), source: 'live' });
+    store.events.push({ level: 12, at: clock.now() });
 
     await useCase.execute();
 
@@ -98,7 +97,7 @@ describe('GetCharacterOverview', () => {
     clock.advance(PROFILE_MAX_AGE_MS + 1);
     const overview = await useCase.execute();
 
-    expect(overview.level).toBe(10);
+    expect(overview.profile.level).toBe(10);
     expect(logger.messages[0]).toContain('Blizzard down');
   });
 
@@ -120,18 +119,5 @@ describe('GetCharacterOverview', () => {
     ]);
 
     expect(provider.calls).toBe(1);
-  });
-
-  it('shows the live level when it is ahead of the API', async () => {
-    const { useCase, store, clock } = setup(
-      new FakeProvider(aProfile({ level: 10 })),
-    );
-    store.events.push({ level: 12, at: clock.now(), source: 'live' });
-    store.live = { online: true, level: 12, observedAt: clock.now() };
-
-    const overview = await useCase.execute();
-
-    expect(overview.level).toBe(12);
-    expect(overview.presence.status).toBe('online');
   });
 });

@@ -5,7 +5,6 @@
 import { CharacterProfile } from '../domain/character-profile';
 import { Comment, CommentDraft } from '../domain/comment';
 import { LevelEvent } from '../domain/level-history';
-import { LiveSignal } from '../domain/presence';
 
 /** Source of truth for the character's profile (Blizzard's API). */
 export interface CharacterProfileProvider {
@@ -29,11 +28,6 @@ export interface LevelHistoryStore {
   addLevelEvent(event: LevelEvent): Promise<void>;
   /** Sets the deaths baseline of `level` if it has none yet. */
   setDeathsAtStart(level: number, deaths: number): Promise<void>;
-}
-
-export interface LiveSignalStore {
-  getLiveSignal(): Promise<LiveSignal | null>;
-  saveLiveSignal(signal: LiveSignal): Promise<void>;
 }
 
 export interface CommentStore {
@@ -62,6 +56,5 @@ export interface Logger {
 export const CHARACTER_PROFILE_PROVIDER = Symbol('CharacterProfileProvider');
 export const PROFILE_SNAPSHOT_STORE = Symbol('ProfileSnapshotStore');
 export const LEVEL_HISTORY_STORE = Symbol('LevelHistoryStore');
-export const LIVE_SIGNAL_STORE = Symbol('LiveSignalStore');
 export const COMMENT_STORE = Symbol('CommentStore');
 export const CLOCK = Symbol('Clock');

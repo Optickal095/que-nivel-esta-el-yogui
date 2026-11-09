@@ -34,7 +34,7 @@ export function deathsAtLevel(
 
 /**
  * The level event that still lacks a deaths baseline and can take it now
- * (e.g. a level-up first seen live, or recorded before deaths were tracked).
+ * (recorded while Blizzard did not report deaths, or before they were tracked).
  */
 export function needsDeathsBaseline(
   last: LevelEvent | null,

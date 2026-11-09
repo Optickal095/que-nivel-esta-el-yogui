@@ -16,24 +16,15 @@ model ProfileSnapshot {
   fetchedAt DateTime
 }
 
-/// Every level change observed, from the API or from the live bridge.
+/// Every level change observed.
 model LevelEvent {
   id     Int      @id @default(autoincrement())
   level  Int
   at     DateTime
-  source String // 'api' | 'live'
   /// Total deaths when this level was first recorded (baseline for "deaths at this level").
   deathsAtStart Int?
 
   @@index([at])
-}
-
-/// Last signal from the live bridge (single row, id = 1).
-model LiveSignal {
-  id         Int      @id @default(1)
-  online     Boolean
-  level      Int?
-  observedAt DateTime
 }
 
 /// Visitors' comments. clientKey = hash of the IP (never the IP itself), for the anti-spam cooldown.

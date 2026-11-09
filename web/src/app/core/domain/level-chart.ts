@@ -3,7 +3,7 @@ import { LevelEvent } from './character.model';
 
 export interface ChartGeometry {
   path: string; // SVG path of the step line
-  points: { x: number; y: number; level: number; at: Date; source: 'api' | 'live' }[];
+  points: { x: number; y: number; level: number; at: Date }[];
   yTicks: { y: number; level: number }[];
 }
 
@@ -29,7 +29,7 @@ export function levelChartGeometry(
   const x = (t: number) => pad + ((t - t0) / (t1 - t0)) * (width - 2 * pad);
   const y = (level: number) => height - pad - ((level - minLevel) / (maxLevel - minLevel)) * (height - 2 * pad);
 
-  const points = sorted.map((e) => ({ x: x(e.at.getTime()), y: y(e.level), level: e.level, at: e.at, source: e.source }));
+  const points = sorted.map((e) => ({ x: x(e.at.getTime()), y: y(e.level), level: e.level, at: e.at }));
 
   let path = `M${points[0].x},${points[0].y}`;
   for (const p of points.slice(1)) path += ` H${p.x} V${p.y}`;

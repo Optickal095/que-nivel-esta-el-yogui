@@ -24,14 +24,13 @@ const HEIGHT = 220;
           }
           <path class="line" [attr.d]="g.path" />
           @for (p of g.points; track p.at.getTime()) {
-            <circle [class]="p.source" [attr.cx]="p.x" [attr.cy]="p.y" r="5">
+            <circle [attr.cx]="p.x" [attr.cy]="p.y" r="5">
               <title>Nivel {{ p.level }} · {{ format(p.at) }}</title>
             </circle>
           }
         </svg>
         <p class="caption">
-          Registro desde el {{ format(events()[0].at) }} · los puntos verdes son subidas detectadas en
-          vivo
+          Registro desde el {{ format(events()[0].at) }}
         </p>
       } @else {
         <p class="muted">Todavía no hay historial.</p>
@@ -59,9 +58,6 @@ const HEIGHT = 220;
       fill: var(--gold);
       stroke: var(--bg);
       stroke-width: 2;
-    }
-    circle.live {
-      fill: #3ddc84;
     }
     .caption {
       margin: 0.5rem 0 0;

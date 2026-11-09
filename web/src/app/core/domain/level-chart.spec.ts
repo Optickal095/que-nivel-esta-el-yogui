@@ -10,8 +10,8 @@ describe('levelChartGeometry', () => {
   it('draws a step line that goes up at each level and extends to now', () => {
     const g = levelChartGeometry(
       [
-        { level: 11, at: new Date('2026-11-09T12:00:00Z'), source: 'live' },
-        { level: 10, at: new Date('2026-11-09T00:00:00Z'), source: 'api' },
+        { level: 11, at: new Date('2026-11-09T12:00:00Z') },
+        { level: 10, at: new Date('2026-11-09T00:00:00Z') },
       ],
       now,
       720,
@@ -24,7 +24,7 @@ describe('levelChartGeometry', () => {
   });
 
   it('works with a single event', () => {
-    const g = levelChartGeometry([{ level: 10, at: new Date('2026-11-09T00:00:00Z'), source: 'api' }], now, 720, 220);
+    const g = levelChartGeometry([{ level: 10, at: new Date('2026-11-09T00:00:00Z') }], now, 720, 220);
     expect(g?.points.length).toBe(1);
     expect(g?.yTicks.length).toBeGreaterThan(0);
   });

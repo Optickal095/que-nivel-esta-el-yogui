@@ -2,17 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { CharacterGateway } from '../application/character.gateway';
-import { CharacterOverview, LevelEvent, Presence } from '../domain/character.model';
+import { CharacterOverview, LevelEvent } from '../domain/character.model';
 import { API_BASE_URL } from './api-base-url';
 
 /** JSON as the API sends it: dates are ISO strings. */
 type OverviewDto = Omit<
   CharacterOverview,
-  'lastLoginAt' | 'profileFetchedAt' | 'presence' | 'levelSince'
+  'lastLoginAt' | 'profileFetchedAt' | 'levelSince'
 > & {
   lastLoginAt: string;
   profileFetchedAt: string;
-  presence: Omit<Presence, 'lastSeenAt'> & { lastSeenAt: string | null };
   levelSince: { at: string; exact: boolean } | null;
 };
 type LevelEventDto = Omit<LevelEvent, 'at'> & { at: string };
@@ -33,10 +32,6 @@ export class HttpCharacterGateway implements CharacterGateway {
         funStats: dto.funStats ?? [],
         deaths: dto.deaths ?? null,
         deathsAtLevel: dto.deathsAtLevel ?? null,
-        presence: {
-          ...dto.presence,
-          lastSeenAt: dto.presence.lastSeenAt ? new Date(dto.presence.lastSeenAt) : null,
-        },
       })),
     );
   }
