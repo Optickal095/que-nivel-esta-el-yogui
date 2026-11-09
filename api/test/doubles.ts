@@ -36,6 +36,7 @@ export function aProfile(
     professions: [],
     reputations: [],
     funStats: [],
+    hunterPets: [],
     ...overrides,
   };
 }

@@ -9,6 +9,9 @@
 
     <div class="grid">
       <app-equipment class="span-2" [items]="character.equipment" />
+      @if (character.hunterPets.length > 0) {
+        <app-hunter-pets class="span-2" [pets]="character.hunterPets" />
+      }
       <app-stats [stats]="character.stats" />
       <app-progress [professions]="character.professions" [reputations]="character.reputations" />
       <app-fun-stats class="span-2" [stats]="character.funStats" />

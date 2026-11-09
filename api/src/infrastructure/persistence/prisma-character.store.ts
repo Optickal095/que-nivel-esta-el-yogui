@@ -37,6 +37,7 @@ export class PrismaCharacterStore
         // snapshots saved before these fields existed
         funStats: data.funStats ?? [],
         deaths: data.deaths ?? null,
+        hunterPets: data.hunterPets ?? [],
         lastLoginAt: new Date(data.lastLoginAt),
       },
       fetchedAt: row.fetchedAt,

@@ -35,6 +35,9 @@ export function anOverview(overrides: Partial<CharacterOverview> = {}): Characte
     professions: [{ name: 'Herbalism', skill: 3, maxSkill: 75 }],
     reputations: [],
     funStats: [{ id: 107, label: 'Criaturas muertas', value: 393 }],
+    hunterPets: [
+      { name: 'Lobo', level: 11, creature: 'Acechador de pradera', imageUrl: null, active: true },
+    ],
     levelSince: { at: new Date('2026-11-09T02:00:00Z'), exact: false },
     profileFetchedAt: new Date('2026-11-09T02:00:00Z'),
     ...overrides,

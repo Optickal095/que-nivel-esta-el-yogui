@@ -1,6 +1,6 @@
 # ¿Qué nivel está el Yogui?
 
-Sitio que muestra en todo momento el nivel, las muertes, el equipo, las estadísticas y la última conexión de **Dr Yogui**, un personaje de *World of Warcraft: Forever*. Los visitantes pueden dejar comentarios.
+Sitio que muestra en todo momento el nivel, las muertes, el equipo, la mascota, las estadísticas y la última conexión de **Dr Yogui**, un personaje de *World of Warcraft: Forever*. Los visitantes pueden dejar comentarios.
 
 Los datos salen de la API de perfiles de Blizzard para WoW Forever y se guardan en Postgres para tener historial de nivel y respaldo.
 
@@ -52,7 +52,7 @@ Clean Architecture: las dependencias apuntan hacia adentro (presentación → ap
 
 | Puerto | Adaptador | Para qué |
 |---|---|---|
-| `CharacterProfileProvider` | `BlizzardCharacterProvider` | Perfil, equipo, estadísticas, imagen, profesiones, reputaciones, misiones, JcJ e íconos. |
+| `CharacterProfileProvider` | `BlizzardCharacterProvider` | Perfil, equipo, estadísticas, imagen, profesiones, reputaciones, misiones, JcJ, mascotas de cazador (`/hunter-pets` + imagen de la criatura) e íconos. |
 | `ProfileSnapshotStore` | `PrismaCharacterStore` | Último perfil bueno (caché y respaldo). |
 | `LevelHistoryStore` | `PrismaCharacterStore` | Cada subida de nivel observada. |
 | `CommentStore` | `PrismaCommentStore` | Comentarios. Guarda un hash de la IP (nunca la IP) para el límite de frecuencia. |
@@ -65,7 +65,7 @@ Clean Architecture: las dependencias apuntan hacia adentro (presentación → ap
 | Dominio | `core/domain/` | Modelo de la vista y reglas puras de presentación: `timeAgo`, `levelSinceText`, `deathsAtLevelText`, colores de calidad y de clase, orden de slots, geometría del gráfico de nivel. |
 | Aplicación | `core/application/` | Puertos `CharacterGateway`, `CommentsGateway` y `ModerationKeyStore` (`InjectionToken`). `CharacterFacade` y `CommentsFacade` (signals, refresco cada 60 s). |
 | Infraestructura | `core/infrastructure/` | `HttpCharacterGateway` y `HttpCommentsGateway` (`HttpClient` contra `/api`, fechas ISO, errores traducidos a mensajes para el visitante), `LocalStorageModerationKeyStore`. |
-| UI | `ui/` | Componentes que solo muestran datos y emiten eventos (`hero`, `presence-badge`, `equipment`, `stats`, `progress`, `fun-stats`, `level-history`, `comments`). Ninguno hace HTTP. |
+| UI | `ui/` | Componentes que solo muestran datos y emiten eventos (`hero`, `last-login`, `equipment`, `hunter-pets`, `stats`, `progress`, `fun-stats`, `level-history`, `comments`). Ninguno hace HTTP. |
 
 ### Patrones
 

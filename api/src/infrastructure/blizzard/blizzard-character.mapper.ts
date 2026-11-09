@@ -3,6 +3,7 @@ import {
   CharacterStats,
   EquippedItem,
   FunStat,
+  HunterPet,
   ItemQuality,
   Profession,
   Reputation,
@@ -11,6 +12,7 @@ import {
   BlizzardAchievementStatistics,
   BlizzardCompletedQuests,
   BlizzardEquipment,
+  BlizzardHunterPets,
   BlizzardMedia,
   BlizzardProfessions,
   BlizzardProfile,
@@ -30,8 +32,11 @@ export interface BlizzardCharacterBundle {
   quests: BlizzardCompletedQuests | null;
   pvp: BlizzardPvpSummary | null;
   achievementStatistics: BlizzardAchievementStatistics | null;
+  hunterPets: BlizzardHunterPets | null;
   /** itemId → icon URL */
   icons: ReadonlyMap<number, string>;
+  /** creature display id → render URL */
+  creatureImages: ReadonlyMap<number, string>;
 }
 
 const QUALITIES: ItemQuality[] = [
@@ -146,6 +151,28 @@ function statisticsById(
   return byId;
 }
 
+/** Active pet first, then by stable slot. */
+function mapHunterPets(
+  pets: BlizzardHunterPets | null,
+  images: ReadonlyMap<number, string>,
+): HunterPet[] {
+  return [...(pets?.hunter_pets ?? [])]
+    .sort(
+      (a, b) =>
+        Number(b.is_active ?? false) - Number(a.is_active ?? false) ||
+        (a.slot ?? 0) - (b.slot ?? 0),
+    )
+    .map((p) => ({
+      name: p.name,
+      level: p.level,
+      creature: p.creature.name,
+      imageUrl: p.creature_display
+        ? (images.get(p.creature_display.id) ?? null)
+        : null,
+      active: p.is_active ?? false,
+    }));
+}
+
 function asset(media: BlizzardMedia | null, key: string): string | null {
   return media?.assets?.find((a) => a.key === key)?.value ?? null;
 }
@@ -177,5 +204,6 @@ export function mapBlizzardCharacter(
     professions: mapProfessions(b.professions),
     reputations: mapReputations(b.reputations),
     funStats: FUN_STAT_IDS.flatMap((id) => statistics.get(id) ?? []),
+    hunterPets: mapHunterPets(b.hunterPets, b.creatureImages),
   };
 }

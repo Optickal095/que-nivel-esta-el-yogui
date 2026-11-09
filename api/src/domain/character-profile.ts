@@ -77,6 +77,16 @@ export interface CharacterProfile {
   professions: Profession[];
   reputations: Reputation[];
   funStats: FunStat[];
+  /** Hunter pets (empty for other classes). The active one comes first. */
+  hunterPets: HunterPet[];
+}
+
+export interface HunterPet {
+  name: string; // the name the player gave it, e.g. 'Lobo'
+  level: number;
+  creature: string; // species, e.g. 'Acechador de pradera'
+  imageUrl: string | null;
+  active: boolean;
 }
 
 /** A curated in-game statistic (creatures killed, deaths...). */

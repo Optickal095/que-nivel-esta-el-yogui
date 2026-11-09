@@ -1,0 +1,37 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/hunter-pets?namespace=profile-forever-us"
+    }
+  },
+  "character": {
+    "key": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui?namespace=profile-forever-us"
+    },
+    "name": "Dr",
+    "id": 26182611,
+    "surname": "Yogui",
+    "slug": "dr-yogui"
+  },
+  "hunter_pets": [
+    {
+      "name": "Lobo",
+      "level": 11,
+      "creature": {
+        "key": {
+          "href": "https://us.api.blizzard.com/data/wow/creature/2959?namespace=static-1.60.1_70399-forever-us"
+        },
+        "name": "Acechador de pradera",
+        "id": 2959
+      },
+      "slot": 0,
+      "is_active": true,
+      "creature_display": {
+        "key": {
+          "href": "https://us.api.blizzard.com/data/wow/media/creature-display/643?namespace=static-1.60.1_70399-forever-us"
+        },
+        "id": 643
+      }
+    }
+  ]
+}

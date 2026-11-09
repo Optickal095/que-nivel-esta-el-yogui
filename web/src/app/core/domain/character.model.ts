@@ -52,6 +52,15 @@ export interface Reputation {
   max: number;
 }
 
+export interface HunterPet {
+  name: string;
+  level: number;
+  /** Species, e.g. 'Acechador de pradera'. */
+  creature: string;
+  imageUrl: string | null;
+  active: boolean;
+}
+
 export interface FunStat {
   id: number;
   label: string;
@@ -95,6 +104,8 @@ export interface CharacterOverview {
   professions: Profession[];
   reputations: Reputation[];
   funStats: FunStat[];
+  /** Empty for classes without pets. Active one first. */
+  hunterPets: HunterPet[];
   levelSince: LevelSince | null;
   profileFetchedAt: Date;
 }

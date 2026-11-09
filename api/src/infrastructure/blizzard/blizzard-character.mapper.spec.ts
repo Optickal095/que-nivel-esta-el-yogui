@@ -8,6 +8,7 @@ import {
   BlizzardAchievementStatistics,
   BlizzardCompletedQuests,
   BlizzardEquipment,
+  BlizzardHunterPets,
   BlizzardProfessions,
   BlizzardProfile,
   BlizzardPvpSummary,
@@ -36,6 +37,13 @@ const bundle = (): BlizzardCharacterBundle => ({
   achievementStatistics: fixture<BlizzardAchievementStatistics>(
     'achievement-statistics',
   ),
+  hunterPets: fixture<BlizzardHunterPets>('hunter-pets'),
+  creatureImages: new Map([
+    [
+      643,
+      'https://render.worldofwarcraft.com/forever-us/npcs/zoom/creature-display-643.jpg',
+    ],
+  ]),
   icons: new Map([
     [4577, 'https://render.worldofwarcraft.com/forever-us/icons/56/135612.jpg'],
   ]),
@@ -132,5 +140,43 @@ describe('mapBlizzardCharacter (real fixtures)', () => {
       },
     });
     expect(withMedia.portraitUrl).toBe('https://render/x.png');
+  });
+
+  it('maps the hunter pet with its render', () => {
+    expect(profile.hunterPets).toEqual([
+      {
+        name: 'Lobo',
+        level: 11,
+        creature: 'Acechador de pradera',
+        imageUrl:
+          'https://render.worldofwarcraft.com/forever-us/npcs/zoom/creature-display-643.jpg',
+        active: true,
+      },
+    ]);
+  });
+
+  it('puts the active pet first and has none when the endpoint failed', () => {
+    const pet = (name: string, slot: number, active: boolean) => ({
+      name,
+      level: 10,
+      creature: { name: 'Lobo' },
+      slot,
+      is_active: active,
+    });
+    const p = mapBlizzardCharacter({
+      ...bundle(),
+      hunterPets: {
+        hunter_pets: [
+          pet('A', 0, false),
+          pet('B', 1, true),
+          pet('C', 2, false),
+        ],
+      },
+    });
+    expect(p.hunterPets.map((x) => x.name)).toEqual(['B', 'A', 'C']);
+    expect(p.hunterPets[0].imageUrl).toBeNull();
+    expect(
+      mapBlizzardCharacter({ ...bundle(), hunterPets: null }).hunterPets,
+    ).toEqual([]);
   });
 });

@@ -12,6 +12,7 @@ import { CommentsComponent } from './ui/comments.component';
 import { EquipmentComponent } from './ui/equipment.component';
 import { FunStatsComponent } from './ui/fun-stats.component';
 import { HeroComponent } from './ui/hero.component';
+import { HunterPetsComponent } from './ui/hunter-pets.component';
 import { LevelHistoryComponent } from './ui/level-history.component';
 import { ProgressComponent } from './ui/progress.component';
 import { StatsComponent } from './ui/stats.component';
@@ -22,6 +23,7 @@ import { StatsComponent } from './ui/stats.component';
   imports: [
     HeroComponent,
     EquipmentComponent,
+    HunterPetsComponent,
     StatsComponent,
     ProgressComponent,
     FunStatsComponent,

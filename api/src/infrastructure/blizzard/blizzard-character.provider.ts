@@ -6,6 +6,7 @@ import {
   BlizzardAchievementStatistics,
   BlizzardCompletedQuests,
   BlizzardEquipment,
+  BlizzardHunterPets,
   BlizzardMedia,
   BlizzardProfessions,
   BlizzardProfile,
@@ -18,10 +19,11 @@ import {
  * Adapter: implements CharacterProfileProvider with Blizzard's WoW Forever API.
  * The main profile is required; every sub-resource is optional so one failing
  * endpoint (e.g. the render, which takes hours to appear) never hides the rest.
- * Item icons never change, so they are cached in memory by item id.
+ * Item icons and creature renders never change, so they are cached in memory.
  */
 export class BlizzardCharacterProvider implements CharacterProfileProvider {
   private readonly iconCache = new Map<number, string>();
+  private readonly creatureImageCache = new Map<number, string>();
   private readonly basePath: string;
 
   constructor(
@@ -50,6 +52,7 @@ export class BlizzardCharacterProvider implements CharacterProfileProvider {
       quests,
       pvp,
       achievementStatistics,
+      hunterPets,
     ] = await Promise.all([
       this.optional<BlizzardEquipment>('/equipment'),
       this.optional<BlizzardStatistics>('/statistics'),
@@ -59,9 +62,17 @@ export class BlizzardCharacterProvider implements CharacterProfileProvider {
       this.optional<BlizzardCompletedQuests>('/quests/completed'),
       this.optional<BlizzardPvpSummary>('/pvp-summary'),
       this.optional<BlizzardAchievementStatistics>('/achievements/statistics'),
+      this.optional<BlizzardHunterPets>('/hunter-pets'),
     ]);
 
-    await this.loadIcons(equipment?.equipped_items.map((i) => i.item.id) ?? []);
+    await Promise.all([
+      this.loadIcons(equipment?.equipped_items.map((i) => i.item.id) ?? []),
+      this.loadCreatureImages(
+        (hunterPets?.hunter_pets ?? []).flatMap((p) =>
+          p.creature_display ? [p.creature_display.id] : [],
+        ),
+      ),
+    ]);
 
     return mapBlizzardCharacter({
       profile,
@@ -73,7 +84,9 @@ export class BlizzardCharacterProvider implements CharacterProfileProvider {
       quests,
       pvp,
       achievementStatistics,
+      hunterPets,
       icons: this.iconCache,
+      creatureImages: this.creatureImageCache,
     });
   }
 
@@ -104,6 +117,22 @@ export class BlizzardCharacterProvider implements CharacterProfileProvider {
         );
         const icon = media?.assets?.find((a) => a.key === 'icon')?.value;
         if (icon) this.iconCache.set(id, icon);
+      }),
+    );
+  }
+
+  private async loadCreatureImages(displayIds: number[]): Promise<void> {
+    const missing = [...new Set(displayIds)].filter(
+      (id) => !this.creatureImageCache.has(id),
+    );
+    await Promise.all(
+      missing.map(async (id) => {
+        const media = await this.optional<BlizzardMedia>(
+          `/data/wow/media/creature-display/${id}`,
+          'static',
+        );
+        const image = media?.assets?.find((a) => a.key === 'zoom')?.value;
+        if (image) this.creatureImageCache.set(id, image);
       }),
     );
   }

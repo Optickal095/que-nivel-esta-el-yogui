@@ -64,6 +64,17 @@ export interface BlizzardStatistics {
   dodge: Rated;
 }
 
+export interface BlizzardHunterPets {
+  hunter_pets?: {
+    name: string;
+    level: number;
+    creature: Named;
+    slot?: number;
+    is_active?: boolean;
+    creature_display?: { id: number };
+  }[];
+}
+
 export interface BlizzardMedia {
   assets?: { key: string; value: string }[];
 }

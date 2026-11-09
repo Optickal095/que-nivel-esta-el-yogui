@@ -71,4 +71,11 @@ describe('App (page)', () => {
   it('hides the moderation link from visitors', () => {
     expect(render().textContent).not.toContain('Moderar');
   });
+
+  it('shows the hunter pet, and nothing for characters without pets', () => {
+    expect(render().textContent).toContain('Acechador de pradera');
+
+    gateway.overview = anOverview({ hunterPets: [] });
+    expect(render().querySelector('app-hunter-pets')).toBeNull();
+  });
 });
