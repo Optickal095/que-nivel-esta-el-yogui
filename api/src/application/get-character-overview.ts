@@ -11,7 +11,7 @@ import {
   StoredProfile,
 } from './ports';
 
-export const PROFILE_MAX_AGE_MS = 10 * 60 * 1000;
+export const PROFILE_MAX_AGE_MS = 2 * 60 * 1000;
 
 /**
  * Use case: what the site shows.

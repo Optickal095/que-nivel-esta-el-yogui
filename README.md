@@ -44,7 +44,7 @@ Clean Architecture: las dependencias apuntan hacia adentro (presentación → ap
 | Capa | Carpeta | Contenido |
 |---|---|---|
 | Dominio | `domain/` | `CharacterProfile`, `LevelEvent`, `Presence`. Reglas puras: `resolvePresence` (online / offline / desconocido, con vencimiento de 10 min del dato en vivo), `shouldRecordLevel` (los niveles solo suben), `levelSince` (desde cuándo está en el nivel actual; es exacto solo si se vio el nivel anterior), `buildOverview`. |
-| Aplicación | `application/` | Puertos (`ports.ts`) y casos de uso: `GetCharacterOverview` (caché de 10 min sobre Blizzard, conserva el último dato bueno si la API falla y comparte una sola consulta entre visitas simultáneas), `GetLevelHistory`, `RecordLiveUpdate`. |
+| Aplicación | `application/` | Puertos (`ports.ts`) y casos de uso: `GetCharacterOverview` (caché de 2 min sobre Blizzard, conserva el último dato bueno si la API falla y comparte una sola consulta entre visitas simultáneas), `GetLevelHistory`, `RecordLiveUpdate`. |
 | Infraestructura | `infrastructure/` | `BlizzardApiClient` (OAuth *client credentials* con token en caché), `mapBlizzardCharacter` (JSON de Blizzard → dominio, función pura), `BlizzardCharacterProvider`, `PrismaCharacterStore`, `SystemClock`. |
 | Presentación | `presentation/` | `CharacterController` (`GET /api/character`, `GET /api/character/history`), `LiveController` (`POST /api/live`), `LiveTokenGuard`, DTOs. |
 | Composición | `character.module.ts` | Une cada puerto con su adaptador y arma los casos de uso con *factories*. Los casos de uso no conocen NestJS. |
@@ -72,7 +72,7 @@ Clean Architecture: las dependencias apuntan hacia adentro (presentación → ap
 
 - **Ports & Adapters / Repository:** `PrismaCharacterStore` implementa tres puertos chicos (segregación de interfaces).
 - **Adapter:** `BlizzardCharacterProvider` + `mapBlizzardCharacter` aíslan el JSON sin documentar de Blizzard; si la API cambia, se toca solo ese archivo.
-- **Cache-aside:** `GetCharacterOverview` sirve lo guardado y refresca cuando tiene más de 10 minutos.
+- **Cache-aside:** `GetCharacterOverview` sirve lo guardado y refresca cuando tiene más de 2 minutos (Blizzard actualiza el perfil 1 a 2 min después de que el personaje cierra sesión).
 - **Facade:** `CharacterFacade` expone el estado de la página como signals.
 
 ## Tests
