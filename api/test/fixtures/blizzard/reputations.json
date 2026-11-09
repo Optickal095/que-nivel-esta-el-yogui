@@ -1,0 +1,82 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/reputations?namespace=profile-forever-us"
+    }
+  },
+  "character": {
+    "key": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui?namespace=profile-forever-us"
+    },
+    "name": "Dr",
+    "id": 26182611,
+    "surname": "Yogui",
+    "slug": "dr-yogui"
+  },
+  "reputations": [
+    {
+      "faction": {
+        "key": {
+          "href": "https://us.api.blizzard.com/data/wow/reputation-faction/81?namespace=static-1.60.1_70399-forever-us"
+        },
+        "name": "Cima del Trueno",
+        "id": 81
+      },
+      "standing": {
+        "raw": 6230,
+        "value": 3230,
+        "max": 6000,
+        "tier": 4,
+        "name": "Amistoso"
+      }
+    },
+    {
+      "faction": {
+        "key": {
+          "href": "https://us.api.blizzard.com/data/wow/reputation-faction/76?namespace=static-1.60.1_70399-forever-us"
+        },
+        "name": "Orgrimmar",
+        "id": 76
+      },
+      "standing": {
+        "raw": 3137,
+        "value": 137,
+        "max": 6000,
+        "tier": 4,
+        "name": "Amistoso"
+      }
+    },
+    {
+      "faction": {
+        "key": {
+          "href": "https://us.api.blizzard.com/data/wow/reputation-faction/530?namespace=static-1.60.1_70399-forever-us"
+        },
+        "name": "Trols Lanza Negra",
+        "id": 530
+      },
+      "standing": {
+        "raw": 3137,
+        "value": 137,
+        "max": 6000,
+        "tier": 4,
+        "name": "Amistoso"
+      }
+    },
+    {
+      "faction": {
+        "key": {
+          "href": "https://us.api.blizzard.com/data/wow/reputation-faction/68?namespace=static-1.60.1_70399-forever-us"
+        },
+        "name": "Entrañas",
+        "id": 68
+      },
+      "standing": {
+        "raw": 537,
+        "value": 537,
+        "max": 3000,
+        "tier": 3,
+        "name": "Neutral"
+      }
+    }
+  ]
+}

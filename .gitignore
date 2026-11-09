@@ -1,0 +1,25 @@
+# Dependencias
+node_modules/
+
+# Builds
+dist/
+/api/dist/
+/web/dist/
+.angular/
+
+# Entorno (credenciales de Blizzard, base de datos, token del bridge)
+.env
+*.local
+
+# Respuestas crudas del spike (pueden traer datos personales; los fixtures limpios van en api/test/fixtures)
+/scripts/out/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / SO
+.DS_Store
+.vscode/
+.idea/
+Thumbs.db

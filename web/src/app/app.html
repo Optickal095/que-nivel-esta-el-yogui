@@ -1,0 +1,22 @@
+<main>
+  @if (facade.overview(); as character) {
+    <app-hero [character]="character" [presence]="presence()!" [levelSince]="levelSince()" />
+
+    <div class="grid">
+      <app-equipment class="span-2" [items]="character.equipment" />
+      <app-stats [stats]="character.stats" />
+      <app-progress [professions]="character.professions" [reputations]="character.reputations" />
+      <app-fun-stats class="span-2" [stats]="character.funStats" />
+      <app-level-history class="span-2" [events]="facade.history()" [now]="facade.now()" />
+    </div>
+
+    <footer>
+      Datos de la API de Blizzard (WoW Forever), actualizados {{ updatedAgo() }}. Se refrescan solos cada
+      minuto.
+    </footer>
+  } @else if (facade.error(); as error) {
+    <p class="state">{{ error }}</p>
+  } @else {
+    <p class="state">Buscando al Yogui…</p>
+  }
+</main>

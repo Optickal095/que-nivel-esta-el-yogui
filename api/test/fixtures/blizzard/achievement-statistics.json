@@ -1,0 +1,242 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/achievements/statistics?namespace=profile-forever-us"
+    }
+  },
+  "character": {
+    "key": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui?namespace=profile-forever-us"
+    },
+    "name": "Dr",
+    "id": 26182611,
+    "surname": "Yogui",
+    "slug": "dr-yogui"
+  },
+  "categories": [
+    {
+      "id": 130,
+      "name": "Personaje",
+      "sub_categories": [
+        {
+          "id": 145,
+          "name": "Consumibles",
+          "statistics": [
+            {
+              "id": 346,
+              "name": "Bebidas consumidas",
+              "last_updated_timestamp": 1794119137000,
+              "quantity": 4
+            },
+            {
+              "id": 347,
+              "name": "Comida consumida",
+              "last_updated_timestamp": 1794177800000,
+              "quantity": 54
+            }
+          ]
+        },
+        {
+          "id": 147,
+          "name": "Reputación",
+          "statistics": [
+            {
+              "id": 926,
+              "name": "Mayoría de facciones de la Horda a nivel Exaltado",
+              "last_updated_timestamp": 1794177432000,
+              "quantity": 4
+            },
+            {
+              "id": 931,
+              "name": "Facciones totales encontradas",
+              "last_updated_timestamp": 1794177432000,
+              "quantity": 5
+            }
+          ]
+        }
+      ],
+      "statistics": [
+        {
+          "id": 64222,
+          "name": "Campamentos realizados",
+          "last_updated_timestamp": 1794084788000,
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": 128,
+      "name": "Víctimas",
+      "sub_categories": [
+        {
+          "id": 135,
+          "name": "Criaturas",
+          "statistics": [
+            {
+              "id": 107,
+              "name": "Criaturas muertas",
+              "last_updated_timestamp": 1794180710000,
+              "quantity": 393
+            },
+            {
+              "id": 1337,
+              "name": "Tipos de criaturas diferentes que has matado",
+              "last_updated_timestamp": 1794180710000,
+              "quantity": 2
+            },
+            {
+              "id": 1336,
+              "name": "Tipo de criatura que has matado más veces",
+              "last_updated_timestamp": 1794180710000,
+              "description": "Bestia",
+              "quantity": 256
+            },
+            {
+              "id": 108,
+              "name": "Alimañas muertas",
+              "last_updated_timestamp": 1794078897000,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "id": 137,
+          "name": "Golpes de gracia",
+          "statistics": [
+            {
+              "id": 1487,
+              "name": "Golpes de gracia",
+              "last_updated_timestamp": 1794180710000,
+              "quantity": 300
+            },
+            {
+              "id": 1488,
+              "name": "Golpes de gracia del mundo",
+              "last_updated_timestamp": 1794180710000,
+              "quantity": 300
+            },
+            {
+              "id": 1489,
+              "name": "Continente con más número de golpes de gracia",
+              "last_updated_timestamp": 1794180710000,
+              "description": "Kalimdor",
+              "quantity": 300
+            }
+          ]
+        }
+      ],
+      "statistics": [
+        {
+          "id": 1197,
+          "name": "Muertes realizadas",
+          "last_updated_timestamp": 1794180710000,
+          "quantity": 394
+        },
+        {
+          "id": 1198,
+          "name": "Cantidad de muertes que te han otorgado experiencia u honor",
+          "last_updated_timestamp": 1794180710000,
+          "quantity": 392
+        }
+      ]
+    },
+    {
+      "id": 122,
+      "name": "Muertes",
+      "statistics": [
+        {
+          "id": 60,
+          "name": "Muertes propias",
+          "last_updated_timestamp": 1794180955000,
+          "quantity": 24
+        }
+      ]
+    },
+    {
+      "id": 133,
+      "name": "Misiones",
+      "statistics": [
+        {
+          "id": 98,
+          "name": "Misiones completadas",
+          "last_updated_timestamp": 1794177432000,
+          "quantity": 29
+        },
+        {
+          "id": 95,
+          "name": "Cantidad media de misiones completadas cada día",
+          "last_updated_timestamp": 1794177432000,
+          "quantity": 0
+        },
+        {
+          "id": 94,
+          "name": "Misiones abandonadas",
+          "last_updated_timestamp": 1794085944000,
+          "quantity": 6
+        }
+      ]
+    },
+    {
+      "id": 132,
+      "name": "Habilidades",
+      "sub_categories": [
+        {
+          "id": 178,
+          "name": "Habilidades secundarias",
+          "statistics": [
+            {
+              "id": 1524,
+              "name": "Habilidad en cocina",
+              "last_updated_timestamp": 1794177432000,
+              "quantity": 1
+            },
+            {
+              "id": 1745,
+              "name": "Recetas de cocina conocidas",
+              "last_updated_timestamp": 1794177432000,
+              "quantity": 10
+            }
+          ]
+        },
+        {
+          "id": 173,
+          "name": "Profesiones",
+          "statistics": [
+            {
+              "id": 1538,
+              "name": "Habilidad en herboristería mayor",
+              "last_updated_timestamp": 1794177432000,
+              "quantity": 3
+            }
+          ]
+        }
+      ],
+      "statistics": [
+        {
+          "id": 1199,
+          "name": "Profesiones aprendidas",
+          "last_updated_timestamp": 1794177432000,
+          "quantity": 1
+        },
+        {
+          "id": 1201,
+          "name": "Cantidad de profesiones al máximo nivel",
+          "last_updated_timestamp": 1794177432000,
+          "quantity": 1
+        },
+        {
+          "id": 1200,
+          "name": "Cantidad de habilidades secundarias al máximo nivel",
+          "last_updated_timestamp": 1794177432000,
+          "quantity": 1
+        },
+        {
+          "id": 1202,
+          "name": "Cantidad de habilidades con armas al máximo nivel",
+          "last_updated_timestamp": 1794180661000,
+          "quantity": 5
+        }
+      ]
+    }
+  ]
+}

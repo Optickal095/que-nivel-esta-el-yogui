@@ -1,0 +1,18 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/pvp-summary?namespace=profile-forever-us"
+    }
+  },
+  "honorable_kills": 0,
+  "character": {
+    "key": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui?namespace=profile-forever-us"
+    },
+    "name": "Dr",
+    "id": 26182611,
+    "surname": "Yogui",
+    "slug": "dr-yogui"
+  },
+  "pvp_rank": 0
+}

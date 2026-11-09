@@ -1,0 +1,35 @@
+// Persistence for "¿Qué nivel está el Yogui?". Only what Blizzard does not keep for us.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Last good profile from Blizzard (single row, id = 1). Kept as JSON: it is a cache, not queried by field.
+model ProfileSnapshot {
+  id        Int      @id @default(1)
+  data      Json
+  fetchedAt DateTime
+}
+
+/// Every level change observed, from the API or from the live bridge.
+model LevelEvent {
+  id     Int      @id @default(autoincrement())
+  level  Int
+  at     DateTime
+  source String // 'api' | 'live'
+
+  @@index([at])
+}
+
+/// Last signal from the live bridge (single row, id = 1).
+model LiveSignal {
+  id         Int      @id @default(1)
+  online     Boolean
+  level      Int?
+  observedAt DateTime
+}

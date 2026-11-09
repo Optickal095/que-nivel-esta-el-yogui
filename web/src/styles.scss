@@ -1,0 +1,42 @@
+:root {
+  --bg: #0e1014;
+  --card: #171a21;
+  --text: #e8e6e3;
+  --muted: #9aa0a8;
+  --gold: #f8b700;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at top, rgba(178, 34, 34, 0.18), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+.card {
+  display: block;
+  height: 100%;
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.card h2 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  color: var(--gold);
+}
+
+.muted {
+  color: var(--muted);
+}

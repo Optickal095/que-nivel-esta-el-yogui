@@ -1,0 +1,95 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui?namespace=profile-forever-us"
+    }
+  },
+  "id": 26182611,
+  "name": "Dr",
+  "gender": {
+    "type": "MALE",
+    "name": "Masculino"
+  },
+  "faction": {
+    "type": "HORDE",
+    "name": "Horda"
+  },
+  "race": {
+    "key": {
+      "href": "https://us.api.blizzard.com/data/wow/playable-race/6?namespace=static-1.60.1_70399-forever-us"
+    },
+    "name": "Tauren",
+    "id": 6
+  },
+  "character_class": {
+    "key": {
+      "href": "https://us.api.blizzard.com/data/wow/playable-class/3?namespace=static-1.60.1_70399-forever-us"
+    },
+    "name": "Cazador",
+    "id": 3
+  },
+  "level": 10,
+  "experience": 3875,
+  "achievement_points": 0,
+  "achievements": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/achievements?namespace=profile-forever-us"
+  },
+  "titles": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/titles?namespace=profile-forever-us"
+  },
+  "pvp_summary": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/pvp-summary?namespace=profile-forever-us"
+  },
+  "encounters": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/encounters?namespace=profile-forever-us"
+  },
+  "media": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/character-media?namespace=profile-forever-us"
+  },
+  "hunter_pets": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/hunter-pets?namespace=profile-forever-us"
+  },
+  "last_login_timestamp": 1794182839000,
+  "average_item_level": 4,
+  "equipped_item_level": 4,
+  "specializations": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/specializations?namespace=profile-forever-us"
+  },
+  "statistics": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/statistics?namespace=profile-forever-us"
+  },
+  "mythic_keystone_profile": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/mythic-keystone-profile?namespace=profile-forever-us"
+  },
+  "equipment": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/equipment?namespace=profile-forever-us"
+  },
+  "appearance": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/appearance?namespace=profile-forever-us"
+  },
+  "collections": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/collections?namespace=profile-forever-us"
+  },
+  "reputations": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/reputations?namespace=profile-forever-us"
+  },
+  "quests": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/quests?namespace=profile-forever-us"
+  },
+  "achievements_statistics": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/achievements/statistics?namespace=profile-forever-us"
+  },
+  "professions": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/professions?namespace=profile-forever-us"
+  },
+  "is_remix": false,
+  "surname": "Yogui",
+  "ruleset": {
+    "key": {
+      "href": "https://us.api.blizzard.com/data/wow/ruleset/1?namespace=dynamic-forever-us"
+    },
+    "name": "JcJ",
+    "id": 1
+  },
+  "name_search": "Dr Yogui"
+}

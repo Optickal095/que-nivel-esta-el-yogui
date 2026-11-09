@@ -1,0 +1,111 @@
+/** Front-end domain model: what the page shows. Dates are real Dates (the gateway parses them). */
+
+export type ItemQuality =
+  | 'POOR'
+  | 'COMMON'
+  | 'UNCOMMON'
+  | 'RARE'
+  | 'EPIC'
+  | 'LEGENDARY'
+  | 'ARTIFACT'
+  | 'HEIRLOOM';
+
+export interface EquippedItem {
+  slot: string;
+  slotName: string;
+  itemId: number;
+  name: string;
+  quality: ItemQuality;
+  itemLevel: number;
+  iconUrl: string | null;
+  enchantments: string[];
+}
+
+export interface CharacterStats {
+  health: number;
+  power: number;
+  powerType: string;
+  strength: number;
+  agility: number;
+  intellect: number;
+  stamina: number;
+  spirit: number;
+  armor: number;
+  defense: number;
+  attackPower: number;
+  rangedAttackPower: number;
+  meleeCritPct: number;
+  rangedCritPct: number;
+  spellCritPct: number;
+  dodgePct: number;
+}
+
+export interface Profession {
+  name: string;
+  skill: number;
+  maxSkill: number;
+}
+
+export interface Reputation {
+  faction: string;
+  standing: string;
+  value: number;
+  max: number;
+}
+
+export interface FunStat {
+  id: number;
+  label: string;
+  value: number;
+}
+
+/** Since when the character is at its current level (real time, not /played). */
+export interface LevelSince {
+  at: Date;
+  /** false = tracking started at this level, so it is a lower bound. */
+  exact: boolean;
+}
+
+export type PresenceStatus = 'online' | 'offline' | 'unknown';
+
+export interface Presence {
+  status: PresenceStatus;
+  lastSeenAt: Date | null;
+  source: 'api' | 'live';
+}
+
+export interface CharacterOverview {
+  name: string;
+  surname: string;
+  level: number;
+  apiLevel: number;
+  experience: number;
+  className: string;
+  race: string;
+  gender: string;
+  faction: string;
+  ruleset: string;
+  guild: string | null;
+  averageItemLevel: number;
+  equippedItemLevel: number;
+  lastLoginAt: Date;
+  achievementPoints: number;
+  honorableKills: number;
+  questsCompleted: number;
+  portraitUrl: string | null;
+  avatarUrl: string | null;
+  equipment: EquippedItem[];
+  stats: CharacterStats | null;
+  professions: Profession[];
+  reputations: Reputation[];
+  funStats: FunStat[];
+  levelSince: LevelSince | null;
+  presence: Presence;
+  profileFetchedAt: Date;
+}
+
+export interface LevelEvent {
+  level: number;
+  at: Date;
+  source: 'api' | 'live';
+}

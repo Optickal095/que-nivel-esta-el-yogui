@@ -1,0 +1,20 @@
+{
+  "name": "que-nivel-esta-el-yogui",
+  "version": "1.0.0",
+  "private": true,
+  "description": "¿Qué nivel está el Yogui? Sitio que sigue a un personaje de WoW Forever (Angular + NestJS)",
+  "scripts": {
+    "install:all": "npm install && cd api && npm install && cd ../web && npm install",
+    "dev": "concurrently -n \"api,web\" -c \"blue,green\" \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "cd api && npm run start:dev",
+    "dev:web": "cd web && npm start",
+    "build": "cd web && npm run build && cd ../api && npm run build",
+    "db:dev": "cd api && npx prisma dev --name yogui --detach",
+    "db:migrate": "cd api && npx prisma migrate dev",
+    "test": "cd api && npm test && npm run test:e2e && cd ../web && npx ng test --watch=false --browsers=ChromeHeadless",
+    "spike": "node --env-file=api/.env scripts/spike-blizzard.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

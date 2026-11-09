@@ -1,0 +1,305 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui/quests/completed?namespace=profile-forever-us"
+    }
+  },
+  "character": {
+    "key": {
+      "href": "https://us.api.blizzard.com/profile/wow/character/dr-yogui?namespace=profile-forever-us"
+    },
+    "name": "Dr",
+    "id": 26182611,
+    "surname": "Yogui",
+    "slug": "dr-yogui"
+  },
+  "quests": [
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96626?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Camping 101: Cooking",
+      "id": 96626
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/775?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Journey into Thunder Bluff",
+      "id": 775
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/745?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Sharing the Land",
+      "id": 745
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96646?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Camping 101: Cooking",
+      "id": 96646
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96655?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Camping 101: Cooking",
+      "id": 96655
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/761?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Swoop Hunting",
+      "id": 761
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/748?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Poison Water",
+      "id": 748
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/3376?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Break Sharptusk!",
+      "id": 3376
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/749?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Ravaged Caravan",
+      "id": 749
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96604?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Great Outdoors",
+      "id": 96604
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/1656?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "A Task Unfinished",
+      "id": 1656
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/767?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Rite of Vision",
+      "id": 767
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96606?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Great Outdoors",
+      "id": 96606
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/780?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Battleboars",
+      "id": 780
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/3092?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Etched Note",
+      "id": 3092
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96608?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Great Outdoors",
+      "id": 96608
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/99101?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Our Ancient Enemy",
+      "id": 99101
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96658?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Camping 101: Cooking",
+      "id": 96658
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/746?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Dwarven Digging",
+      "id": 746
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/99411?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Kyle's Gone Missing!",
+      "id": 99411
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/755?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Rites of the Earthmother",
+      "id": 755
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/772?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Rite of Vision",
+      "id": 772
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/747?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Hunt Begins",
+      "id": 747
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/771?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Rite of Vision",
+      "id": 771
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96130?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Chakuyak",
+      "id": 96130
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/95998?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Great Outdoors",
+      "id": 95998
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96605?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Great Outdoors",
+      "id": 96605
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/99081?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Grim Tidings",
+      "id": 99081
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/751?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Ravaged Caravan",
+      "id": 751
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/763?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Rites of the Earthmother",
+      "id": 763
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96634?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Camping 101: Cooking",
+      "id": 96634
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96101?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Great Outdoors",
+      "id": 96101
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96629?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Camping 101: Cooking",
+      "id": 96629
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/753?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "A Humble Task",
+      "id": 753
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/99079?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Longwalker Malah",
+      "id": 99079
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96661?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Camping 101: Cooking",
+      "id": 96661
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/773?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Rite of Wisdom",
+      "id": 773
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/757?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "Rite of Strength",
+      "id": 757
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/96607?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Great Outdoors",
+      "id": 96607
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/752?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "A Humble Task",
+      "id": 752
+    },
+    {
+      "key": {
+        "href": "https://us.api.blizzard.com/data/wow/quest/750?namespace=static-1.60.1_70399-forever-us"
+      },
+      "name": "The Hunt Continues",
+      "id": 750
+    }
+  ]
+}
