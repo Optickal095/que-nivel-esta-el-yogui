@@ -21,7 +21,19 @@ npm run dev                       # API en :3000, web en :4200 (proxy /api → :
 
 > En local, `DATABASE_URL` debe terminar en `&connection_limit=1&pgbouncer=true`: el Postgres de `prisma dev` tiene una sola sesión y no tolera *prepared statements* compartidos.
 
-En producción, `npm run build` compila la web y la API; NestJS sirve el Angular compilado, así que todo queda en una sola URL.
+En local, si existe `web/dist`, NestJS también sirve el Angular compilado en http://localhost:3000.
+
+## Despliegue
+
+| Pieza | Dónde | Cómo |
+|---|---|---|
+| Web (Angular) | GitHub Pages: `https://optickal095.github.io/que-nivel-esta-el-yogui/` | `.github/workflows/pages.yml` compila con `--base-href` y `--define NG_API_BASE_URL` (variable del repo `API_BASE_URL`). |
+| API (NestJS) | Render, plan gratis | `render.yaml` (Blueprint). Los secretos se cargan en el panel de Render. |
+| Base de datos | Neon (Postgres) | `DATABASE_URL` en Render, con la conexión directa (no la *pooled*). Las migraciones corren en el build con `prisma migrate deploy`. |
+| Despertador | GitHub Actions | `.github/workflows/keep-alive.yml` llama a la API cada 10 min para que Render no la duerma y siga registrando niveles. |
+| CI | GitHub Actions | `.github/workflows/ci.yml`: lint, tests y build de la API y la web. |
+
+La API acepta peticiones del navegador solo desde `WEB_ORIGIN` (CORS).
 
 ## Arquitectura
 

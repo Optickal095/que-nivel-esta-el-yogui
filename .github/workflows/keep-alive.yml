@@ -1,0 +1,17 @@
+name: Mantener despierta la API
+
+# Render's free plan sleeps after 15 min without traffic, and a sleeping server
+# records no level-ups. Calling /api/character every 10 min keeps it awake and
+# makes it refresh from Blizzard. (GitHub may delay scheduled runs by a few minutes.)
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    if: vars.API_BASE_URL != ''
+    steps:
+      - name: Ping
+        run: curl --fail --silent --show-error --max-time 90 --retry 3 --retry-delay 20 "${{ vars.API_BASE_URL }}/api/character" -o /dev/null

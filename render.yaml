@@ -1,0 +1,35 @@
+# Render Blueprint: the NestJS API. The web is published separately on GitHub Pages.
+# Secrets marked `sync: false` are entered in the Render dashboard, never committed.
+services:
+  - type: web
+    name: que-nivel-esta-el-yogui-api
+    runtime: node
+    plan: free
+    region: virginia # close to Neon (AWS us-east-1) and Blizzard's US API
+    rootDir: api
+    buildCommand: npm ci && npx prisma generate && npm run build && npx prisma migrate deploy
+    startCommand: node dist/main.js
+    healthCheckPath: /api/health
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - api/**
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: BLIZZARD_CLIENT_ID
+        sync: false
+      - key: BLIZZARD_CLIENT_SECRET
+        sync: false
+      - key: BLIZZARD_REGION
+        value: us
+      - key: CHARACTER_NAME
+        value: Dr
+      - key: CHARACTER_SURNAME
+        value: Yogui
+      - key: DATABASE_URL
+        sync: false # Neon connection string (direct, not pooled: migrations need it)
+      - key: LIVE_TOKEN
+        generateValue: true # shared with the live bridge (phase 2)
+      - key: WEB_ORIGIN
+        value: https://optickal095.github.io
