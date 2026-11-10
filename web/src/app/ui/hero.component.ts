@@ -13,7 +13,9 @@ import { LastLoginComponent } from './last-login.component';
     <section class="hero" [style.--class-color]="color()">
       <div class="portrait">
         @if (c.portraitUrl) {
-          <img [src]="c.portraitUrl" [alt]="'Render de ' + c.name + ' ' + c.surname" />
+          <div class="render">
+            <img [src]="c.portraitUrl" [alt]="'Render de ' + c.name + ' ' + c.surname" />
+          </div>
         } @else {
           <div class="placeholder" aria-hidden="true">{{ initials() }}</div>
           <p class="hint">Blizzard todavía no genera la imagen del personaje.</p>
@@ -87,9 +89,21 @@ import { LastLoginComponent } from './last-login.component';
       align-items: center;
       gap: 1rem;
     }
-    .portrait > img {
-      width: 100%;
-      border-radius: 1rem;
+    /*
+     * Blizzard's main-raw render is 1600×1200 with the character in the middle
+     * (≈ x 545–1044, y 280–1007). The frame shows only a 686×800 window around
+     * it, same proportions as the face next to it.
+     */
+    .render {
+      position: relative;
+      aspect-ratio: 480 / 560;
+      overflow: hidden;
+    }
+    .render img {
+      position: absolute;
+      width: 233.2%; /* 1600 / 686 */
+      left: -65.7%; /* -(794 - 343) / 686 */
+      top: -30.4%; /* -(643 - 400) / 800 */
     }
     .placeholder {
       aspect-ratio: 3 / 4;
