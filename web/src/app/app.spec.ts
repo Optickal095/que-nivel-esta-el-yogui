@@ -78,4 +78,8 @@ describe('App (page)', () => {
     gateway.overview = anOverview({ hunterPets: [] });
     expect(render().querySelector('app-hunter-pets')).toBeNull();
   });
+
+  it('tattoos the deaths on the Yogui face', () => {
+    expect(render().querySelector('app-death-face .count')?.textContent).toContain('24');
+  });
 });

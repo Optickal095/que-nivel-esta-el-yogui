@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { CharacterOverview } from '../core/domain/character.model';
 import { LevelSinceText, classColor } from '../core/domain/formatting';
+import { DeathFaceComponent } from './death-face.component';
 import { LastLoginComponent } from './last-login.component';
 
 @Component({
   selector: 'app-hero',
-  imports: [LastLoginComponent],
+  imports: [LastLoginComponent, DeathFaceComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let c = character();
@@ -16,6 +17,9 @@ import { LastLoginComponent } from './last-login.component';
         } @else {
           <div class="placeholder" aria-hidden="true">{{ initials() }}</div>
           <p class="hint">Blizzard todavía no genera la imagen del personaje.</p>
+        }
+        @if (c.deaths !== null) {
+          <app-death-face class="death-face" [deaths]="c.deaths" />
         }
       </div>
 
@@ -73,11 +77,17 @@ import { LastLoginComponent } from './last-login.component';
   styles: `
     .hero {
       display: grid;
-      grid-template-columns: minmax(180px, 280px) 1fr;
+      grid-template-columns: minmax(320px, 460px) 1fr;
       gap: 2rem;
       align-items: center;
     }
-    .portrait img {
+    .portrait {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 1rem;
+    }
+    .portrait > img {
       width: 100%;
       border-radius: 1rem;
     }
@@ -164,7 +174,8 @@ import { LastLoginComponent } from './last-login.component';
         text-align: center;
       }
       .portrait {
-        max-width: 200px;
+        width: 100%;
+        max-width: 380px;
         margin: 0 auto;
       }
       .facts {

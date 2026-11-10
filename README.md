@@ -65,7 +65,7 @@ Clean Architecture: las dependencias apuntan hacia adentro (presentación → ap
 | Dominio | `core/domain/` | Modelo de la vista y reglas puras de presentación: `timeAgo`, `levelSinceText`, `deathsAtLevelText`, colores de calidad y de clase, orden de slots, geometría del gráfico de nivel. |
 | Aplicación | `core/application/` | Puertos `CharacterGateway`, `CommentsGateway` y `ModerationKeyStore` (`InjectionToken`). `CharacterFacade` y `CommentsFacade` (signals, refresco cada 60 s). |
 | Infraestructura | `core/infrastructure/` | `HttpCharacterGateway` y `HttpCommentsGateway` (`HttpClient` contra `/api`, fechas ISO, errores traducidos a mensajes para el visitante), `LocalStorageModerationKeyStore`. |
-| UI | `ui/` | Componentes que solo muestran datos y emiten eventos (`hero`, `last-login`, `equipment`, `hunter-pets`, `stats`, `progress`, `fun-stats`, `level-history`, `comments`). Ninguno hace HTTP. |
+| UI | `ui/` | Componentes que solo muestran datos y emiten eventos (`hero`, `death-face`, `last-login`, `equipment`, `hunter-pets`, `stats`, `progress`, `fun-stats`, `level-history`, `comments`). Ninguno hace HTTP. |
 
 ### Patrones
 
@@ -103,4 +103,5 @@ npm test     # API: unitarios + e2e (Jest, con dobles de los puertos) · Web: Ka
 - La imagen del personaje (`character-media`) puede tardar horas en generarse; mientras tanto la web muestra las iniciales.
 - **No expone el `/played`.** "Lleva X en nivel N" es tiempo de reloj desde que se registró la subida, no tiempo jugado. Para el nivel en que empezó el registro se muestra "al menos". El `/played` real solo se puede leer desde el cliente del propio jugador (`RequestTimePlayed`).
 - "Datos curiosos" sale de `/achievements/statistics`, filtrado por ID de estadística (`FUN_STAT_IDS` en el mapper). Los IDs son iguales en todos los idiomas. Las muertes (`DEATHS_STAT_ID` = 60) se muestran aparte, arriba.
+- **Cara con las muertes:** `death-face` pone el total de muertes sobre la frente de `web/public/yogui-face.jpg` con CSS (posición en % del recorte de 480×560, `mix-blend-mode: multiply`). Si se cambia la foto, hay que volver a medir la frente.
 - **Muertes por nivel:** Blizzard solo da el total y lo actualiza al cerrar sesión. Las muertes "en nivel N" se cuentan desde que el sitio registró ese nivel, así que no incluyen las de la misma sesión en que subió.
